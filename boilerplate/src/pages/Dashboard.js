@@ -37,12 +37,6 @@ const lineOptions = {
     },
   },
   scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'Months',
-      },
-    },
     y: {
       beginAtZero: true,
       title: {
@@ -72,17 +66,11 @@ const barOptions = {
     },
   },
   scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'Fraud Types',
-      },
-    },
     y: {
       beginAtZero: true,
       title: {
         display: true,
-        text: 'Number of Incidents',
+        text: 'No. of Incidents',
       },
     },
   },
@@ -93,36 +81,54 @@ function Dashboard() {
     <div className="container mx-auto p-4 flex">
       <div className="flex-1 mr-4">
         <div className="flex justify-between">
-          <h1 className="text-4xl font-bold mb-4 text-primary">Dashboard</h1>
+          <h1 className="text-4xl font-bold mb-4 ml-12 text-primary">Dashboard</h1>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+
+
+        <div className="mt-2 px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           <div className="card bg-background shadow-xl col-span-2 lg:col-span-1">
             <div className="card-body">
               <h2 className="card-title text-primary">Recent Trends</h2>
               <Line data={lineData} options={lineOptions} />
             </div>
           </div>
+
           <div className="card bg-background shadow-xl col-span-2 lg:col-span-1">
             <div className="card-body">
-              <h2 className="card-title text-primary">Top Frauds This Month</h2>
+              <h2 className="card-title text-primary font-medium">Top Frauds This Month</h2>
               <Bar data={barData} options={barOptions} />
             </div>
           </div>
+
         </div>
+
+
         <div className="mt-4">
-          <p className="text-secondary">As of now, there have been <span className="font-bold text-warning">1,234</span> people scammed this month.</p>
-          <p className="text-secondary mt-2">Total amount scammed: <span className="font-bold text-warning">$56,789</span>.</p>
+          <p className="text-secondary ml-12">As of now, there have been <span className="font-bold text-warning">1,234</span> people scammed this month.</p>
+          <p className="text-secondary mt-2 ml-12">Total amount scammed: <span className="font-bold text-warning">$56,789</span>.</p>
         </div>
       </div>
+
+
+
       <div className="w-1/4 ml-4">
         <div className="mb-4">
           <h2 className="text-xl font-bold mb-2 text-primary">Family Members</h2>
-          <ul className="list-disc pl-5">
-            <li className="mb-2">John Doe - 2 Attempts</li>
-            <li className="mb-2">Jane Doe - 1 Attempt</li>
-            <li className="mb-2">Baby Doe - 0 Attempts</li>
-          </ul>
-          <div>
+          <div className="avatar-group -space-x-6 rtl:space-x-reverse">
+            <div className="avatar">
+              <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg')]"></div>
+            </div>
+            <div className="avatar">
+              <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg')]"></div>
+            </div>
+            <div className="avatar">
+              <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg')]"></div>
+            </div>
+            <div className="avatar">
+              <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg')]"></div>
+            </div>
+          </div>
+          <div className="mt-4">
             <p className="text-secondary">Scam Attempts Passed: 2</p>
             <p className="text-warning">Scam Attempts Failed: 1</p>
             <p className="text-warning">Scam Attempts Almost Failed: 1</p>
