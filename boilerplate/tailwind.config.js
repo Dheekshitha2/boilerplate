@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#4A90E2', // Soft Blue
-        secondary: '#E0E0E0', // Soft Grey
+        primary: '#00008B', // Soft Blue
+        secondary: '#1d64e7', // Soft Grey
         accent: '#7ED321', // Soft Green
         neutral: '#4A4A4A', // Dark Grey
         background: '#F5F5F5', // Light Grey
@@ -21,10 +21,10 @@ module.exports = {
     themes: [
       {
         'fraudguardian': {
-          'primary': '#4A90E2',
+          'primary': '#00008B',
           'primary-focus': '#3B7EC1',
           'primary-content': '#FFFFFF',
-          'secondary': '#E0E0E0',
+          'secondary': '#1d64e7',
           'secondary-focus': '#BDBDBD',
           'secondary-content': '#333333',
           'accent': '#7ED321',
