@@ -1,6 +1,7 @@
 import React from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+import { Link } from 'react-router-dom';
 
 ChartJS.register(
   CategoryScale,
@@ -16,11 +17,11 @@ ChartJS.register(
 
 // Line chart data
 const lineData = {
-  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
       label: 'Financial Fraud Trends',
-      data: [65, 59, 80, 81, 56, 55, 40],
+      data: [65, 59, 80, 81, 56, 55, 40, 45, 70, 60, 50, 75],
       fill: true,
       backgroundColor: 'rgba(74, 144, 226, 0.2)',
       borderColor: '#4A90E2',
@@ -53,7 +54,7 @@ const barData = {
   datasets: [
     {
       label: 'Top Frauds This Month',
-      data: [120, 150, 90, 80, 130],
+      data: [120, 150, 90, 80, 130, 110, 95],
       backgroundColor: ['#4A90E2', '#7ED321', '#FF9900', '#E0E0E0', '#FF7F50'],
     },
   ],
@@ -84,7 +85,6 @@ function Dashboard() {
           <h1 className="text-4xl font-bold mb-4 ml-12 text-primary">Dashboard</h1>
         </div>
 
-
         <div className="mt-2 px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           <div className="card bg-background shadow-xl col-span-2 lg:col-span-1">
             <div className="card-body">
@@ -99,9 +99,7 @@ function Dashboard() {
               <Bar data={barData} options={barOptions} />
             </div>
           </div>
-
         </div>
-
 
         <div className="mt-4">
           <p className="text-secondary ml-12">As of now, there have been <span className="font-bold text-warning">1,234</span> people scammed this month.</p>
@@ -109,12 +107,12 @@ function Dashboard() {
         </div>
       </div>
 
-
-
       <div className="w-1/4 ml-4">
         <div className="mb-4">
-          <h2 className="text-xl font-bold mb-2 text-primary">Family Members</h2>
-          <div className="avatar-group -space-x-6 rtl:space-x-reverse">
+          <h2 className="text-xl font-bold mb-2 text-primary">
+            <Link to="/family">Family Members</Link>
+          </h2>
+          <div className="avatar-group -space-x-4 rtl:space-x-reverse">
             <div className="avatar">
               <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg')]"></div>
             </div>
@@ -126,6 +124,9 @@ function Dashboard() {
             </div>
             <div className="avatar">
               <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg')]"></div>
+            </div>
+            <div className="avatar">
+              <div className="w-12 rounded-full bg-cover bg-center bg-[url('https://img.icons8.com/ios-filled/50/000000/plus.png')]"></div>
             </div>
           </div>
           <div className="mt-4">
