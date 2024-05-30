@@ -1,5 +1,3 @@
-// File: src/pages/Landing.js
-
 import React from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from 'react-router-dom';
@@ -21,7 +19,9 @@ ChartJS.register(
 
 function Landing() {
   return (
+
     <div className="container mx-auto p-4 flex flex-col space-y-4">
+      <p className="text-4xl font-bold text-primary mb-4">Hi, Jessica</p>
       <div className="bg-white p-6 shadow-lg rounded-2xl">
         {/* Content Columns */}
         <div className="flex flex-grow">
@@ -121,10 +121,29 @@ function Landing() {
       {/* Third Container - Articles and YouTube Videos */}
       <div className="bg-white p-6 shadow-lg rounded-2xl">
         <h3 className="text-xl font-bold mb-4 text-primary">Latest Info</h3>
-        <ul>
-          <li className="mb-2"><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="text-accent">YouTube Videos</a></li>
-          <li className="mb-2"><a href="https://www.example.com/articles" target="_blank" rel="noopener noreferrer" className="text-accent">Articles</a></li>
-        </ul>
+        <div className="carousel carousel-center rounded-box">
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg" alt="Pizza" />
+          </div> 
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg" alt="Pizza" />
+          </div> 
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.jpg" alt="Pizza" />
+          </div> 
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.jpg" alt="Pizza" />
+          </div> 
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.jpg" alt="Pizza" />
+          </div> 
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.jpg" alt="Pizza" />
+          </div> 
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.jpg" alt="Pizza" />
+          </div>
+        </div>
         <div className="flex mt-4">
           <Link to="/news" className="w-full text-center shadow bg-gray-100 hover:bg-gray-300 font-bold py-3 px-4 rounded-xl">
             View News
