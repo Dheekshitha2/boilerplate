@@ -1,27 +1,139 @@
 import React from 'react';
+import { Line, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
+
+// Line chart data
+const lineData = {
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+  datasets: [
+    {
+      label: 'Financial Fraud Trends',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: true,
+      backgroundColor: 'rgba(74, 144, 226, 0.2)',
+      borderColor: '#4A90E2',
+      tension: 0.4,
+      pointRadius: 0,
+    },
+  ],
+};
+
+const lineOptions = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Months',
+      },
+    },
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Fraud Reported',
+      },
+    },
+  },
+};
+
+// Bar chart data
+const barData = {
+  labels: ['Investments', 'E-commerce', 'Fake Friend', 'Job', 'Phishing'],
+  datasets: [
+    {
+      label: 'Top Frauds This Month',
+      data: [120, 150, 90, 80, 130],
+      backgroundColor: ['#4A90E2', '#7ED321', '#FF9900', '#E0E0E0', '#FF7F50'],
+    },
+  ],
+};
+
+const barOptions = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Fraud Types',
+      },
+    },
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Number of Incidents',
+      },
+    },
+  },
+};
 
 function Dashboard() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Card 1</h2>
-            <p>Content for card 1.</p>
+    <div className="container mx-auto p-4 flex">
+      <div className="flex-1 mr-4">
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-bold mb-4 text-primary">Dashboard</h1>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          <div className="card bg-background shadow-xl col-span-2 lg:col-span-1">
+            <div className="card-body">
+              <h2 className="card-title text-primary">Recent Trends</h2>
+              <Line data={lineData} options={lineOptions} />
+            </div>
+          </div>
+          <div className="card bg-background shadow-xl col-span-2 lg:col-span-1">
+            <div className="card-body">
+              <h2 className="card-title text-primary">Top Frauds This Month</h2>
+              <Bar data={barData} options={barOptions} />
+            </div>
           </div>
         </div>
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Card 2</h2>
-            <p>Content for card 2.</p>
+        <div className="mt-4">
+          <p className="text-secondary">As of now, there have been <span className="font-bold text-warning">1,234</span> people scammed this month.</p>
+          <p className="text-secondary mt-2">Total amount scammed: <span className="font-bold text-warning">$56,789</span>.</p>
+        </div>
+      </div>
+      <div className="w-1/4 ml-4">
+        <div className="mb-4">
+          <h2 className="text-xl font-bold mb-2 text-primary">Family Members</h2>
+          <ul className="list-disc pl-5">
+            <li className="mb-2">John Doe - 2 Attempts</li>
+            <li className="mb-2">Jane Doe - 1 Attempt</li>
+            <li className="mb-2">Baby Doe - 0 Attempts</li>
+          </ul>
+          <div>
+            <p className="text-secondary">Scam Attempts Passed: 2</p>
+            <p className="text-warning">Scam Attempts Failed: 1</p>
+            <p className="text-warning">Scam Attempts Almost Failed: 1</p>
           </div>
         </div>
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Card 3</h2>
-            <p>Content for card 3.</p>
-          </div>
+        <div>
+          <h2 className="text-xl font-bold mb-2 text-primary">Educational Resources</h2>
+          <ul>
+            <li className="mb-2"><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="text-accent">YouTube Videos</a></li>
+            <li className="mb-2"><a href="https://www.example.com/articles" target="_blank" rel="noopener noreferrer" className="text-accent">Articles</a></li>
+          </ul>
         </div>
       </div>
     </div>
