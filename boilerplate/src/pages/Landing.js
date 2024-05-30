@@ -28,6 +28,17 @@ function Landing() {
           {/* First Column */}
           <div className="flex-1 mr-8">
             <p className="text-left font-bold text-xl mb-12 align-top text-primary">Monthly Insights</p>
+
+            <div className="flex justify-center mt-4">
+              <p className="text-center">Fraud activities are at</p>
+            </div>
+            <div className="flex justify-center mt-4">
+              <p className="text-center font-bold text-warning text-6xl">78%</p>
+            </div>
+            <div className="flex justify-center text-warning mt-2 mb-8">
+              <p className="text-center font-semibold">ALL TIME HIGH</p>
+            </div>
+
             <div className="text-left flex justify-between">
               <span>Scammed victims:</span> <span className="font-bold text-secondary">1,234</span>
             </div>
@@ -38,13 +49,13 @@ function Landing() {
           {/* Second Column - Enclosing Container for Inner Cards */}
           <div className="flex-2 flex w-3/4">
             <div className="bg-gray-100 p-4 shadow-inner rounded-xl flex-grow flex w-2/3">
-              {/* Inner Card 1 - Line Chart for Financial Fraud Trends */}
+              {/* Inner Card 1 */}
               <div className="bg-white p-4 shadow rounded-xl mr-2 flex-1 w-1/2">
-                <LineChart />
-              </div>
-              {/* Inner Card 2 - Bar Chart for Top Frauds This Month */}
-              <div className="bg-white p-4 shadow rounded-xl ml-2 flex-1 w-1/2">
                 <BarChart />
+              </div>
+              {/* Inner Card 2 */}
+              <div className="bg-white p-4 shadow rounded-xl ml-2 flex-1 w-1/2">
+                <LineChart />
               </div>
             </div>
           </div>
