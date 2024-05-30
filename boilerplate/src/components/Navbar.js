@@ -12,7 +12,7 @@ function Navbar({ onMenuClick }) {
         </button>
       </div>
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost normal-case text-xl text-white">FraudGuardian</Link>
+        <Link to="/" className="btn btn-ghost normal-case text-xl text-white">FraudZero</Link>
       </div>
       <div className="flex-none">
         <button className="btn btn-ghost text-white">
