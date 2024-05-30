@@ -57,3 +57,130 @@ body.dark ::-webkit-scrollbar-thumb:hover {
 body.dark ::-webkit-scrollbar-corner {
   background: #2d2d2d;
 }
+
+/* Custom styles */
+.container {
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: #F5F5F5;
+  color: #333333;
+}
+
+.text-primary {
+  color: #4A90E2;
+}
+
+.text-accent {
+  color: #7ED321;
+}
+
+.text-secondary {
+  color: #E0E0E0;
+}
+
+.text-warning {
+  color: #FF9900;
+}
+
+.bg-background {
+  background-color: #F5F5F5;
+}
+
+.btn-primary {
+  background-color: #4A90E2;
+  border-color: #4A90E2;
+}
+
+.btn-primary:hover {
+  background-color: #3B7EC1;
+  border-color: #3B7EC1;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.w-1/4 {
+  width: 25%;
+}
+
+.mr-4 {
+  margin-right: 1rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.md\:grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lg\:grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.shadow-xl {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.list-disc {
+  list-style-type: disc;
+}
+
+.pl-5 {
+  padding-left: 1.25rem;
+}
+
+.btn-xs {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.avatar .w-12 {
+  border-radius: 12px; /* Adjust as needed to create the squircle shape */
+}
+
