@@ -121,46 +121,115 @@ function Landing() {
       {/* Third Container - Articles and YouTube Videos */}
       <div className="bg-white p-6 shadow-lg rounded-2xl">
         <h3 className="text-2xl font-bold mb-4 text-primary">Latest Info</h3>
-        <div className="carousel carousel-center rounded-box">
+        <div className="carousel carousel-center p-4 space-x-4 bg-gray-100 rounded-xl shadow-inner flex flex-grow">
           <div className="carousel-item">
-            <div className="card w-96 bg-base-100 shadow-xl">
-              <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
-              <div className="card-body">
-                <h2 className="card-title">
-                  Shoes!
-                  <div className="badge badge-secondary">NEW</div>
-                </h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
-                <div className="card-actions justify-end">
-                  <div className="badge badge-outline">Fashion</div> 
-                  <div className="badge badge-outline">Products</div>
+            <a href="https://www.straitstimes.com/singapore/fixed-deposit-scam-boasting-high-interest-rates-claims-12-victims-losses-amounting-650000" target="_blank" rel="noopener noreferrer">
+              <div className="card w-80 bg-base-100 shadow-xl  rounded-xl px-2 h-[600px]">
+                <figure><img src="https://static1.straitstimes.com.sg/s3fs-public/styles/large30x20/public/articles/2024/04/12/yufdscamcoll1104a_3.jpg?VersionId=q4cJmG.etu0R4J4HkNTgHBtQ3_euVFSK&itok=HG3dW9Y3" alt="Shoes" /></figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                    Fixed deposit scam boasting high interest rates claims 12 victims, losses amount to $650,000
+                    <div className="badge badge-primary">NEW</div>
+                  </h2>
+                  <p>The scammers would impersonate bank agents by using staff passes.</p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">Straits Times</div> 
+                    <div className="badge badge-outline">Newspaper</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
           <div className="carousel-item">
-            <img src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg" alt="Pizza" />
-          </div> 
-          <div className="carousel-item">
-            <img src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.jpg" alt="Pizza" />
-          </div> 
-          <div className="carousel-item">
-            <img src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.jpg" alt="Pizza" />
-          </div> 
-          <div className="carousel-item">
-            <img src="https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.jpg" alt="Pizza" />
-          </div> 
-          <div className="carousel-item">
-            <img src="https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.jpg" alt="Pizza" />
-          </div> 
-          <div className="carousel-item">
-            <img src="https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.jpg" alt="Pizza" />
+            <a href="https://www.youtube.com/watch?v=FQmE2yDPK6g&ab_channel=CNA" target="_blank" rel="noopener noreferrer">
+              <div className="card w-80 bg-base-100 shadow-xl rounded-xl px-2 h-[600px]">
+                <figure><img src="https://images.theconversation.com/files/481362/original/file-20220826-10690-nguhqg.jpg?ixlib=rb-4.1.0&rect=224%2C71%2C5766%2C3574&q=20&auto=format&w=320&fit=clip&dpr=2&usm=12&cs=strip" alt="Shoes" /></figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                  More Singapore SMEs falling prey to scams even as many of them turn to tech like AI for solutions
+                    <div className="badge badge-primary">NEW</div>
+                  </h2>
+                  <p>A majority of small and medium enterprises (SMEs) have turned to artificial intelligence (AI) to improve their operations, but they may not be doing enough to ensure security.</p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">CNA</div> 
+                    <div className="badge badge-outline">Youtube</div>
+                  </div>
+                </div>
+              </div>
+            </a>
           </div>
-        </div>
-        <div className="flex mt-4">
-          <Link to="/news" className="w-full text-center shadow bg-gray-100 hover:bg-gray-300 font-bold py-3 px-4 rounded-xl">
-            View News
-          </Link>
+          <div className="carousel-item">
+            <a href="https://example.com/link3" target="_blank" rel="noopener noreferrer">
+              <div className="card w-80 bg-base-100 shadow-xl  rounded-xl px-2 h-[600px]">
+                <figure><img src="https://media.licdn.com/dms/image/C4E22AQHuFDiEBnz7Sw/feedshare-shrink_800/0/1645186722053?e=2147483647&v=beta&t=mwd9vQUSSFVQLw3m1__yopOcEkU1IFLqtV59wlHPNZ0" alt="Shoes" /></figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                  Received a suspicious email about unusual account activities from an suspicious email domain?
+                    <div className="badge badge-primary">NEW</div>
+                  </h2>
+                  <p>Remember these tips to help you #BeCyberSavvy</p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">UOB</div>
+                    <div className="badge badge-outline">Facebook</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div className="carousel-item">
+            <a href="https://example.com/link4" target="_blank" rel="noopener noreferrer">
+              <div className="card w-80 bg-base-100 shadow-xl  rounded-xl px-2 h-[600px]">
+                <figure><img src="https://t3.ftcdn.net/jpg/03/49/98/34/360_F_349983431_mYca1IaDe1xEPGhTz2OdFRnTiDy1qXvS.jpg" alt="Shoes" /></figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                  Police Advisory On Phishing Smses Involving Impersonation of Banks
+                    <div className="badge badge-primary">NEW</div>
+                  </h2>
+                  <p>These scammers would impersonate bank security department officers and provide forged bank statements displaying unauthorised transactions made in the victims' e-wallets.</p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">SPF</div>  
+                    <div className="badge badge-outline">Article</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div className="carousel-item">
+            <a href="https://example.com/link4" target="_blank" rel="noopener noreferrer">
+              <div className="card w-80 bg-base-100 shadow-xl rounded-xl px-2 h-[600px]">
+                <figure><img src="https://onecms-res.cloudinary.com/image/upload/s--E2EPbIEv--/c_fill,g_auto,h_468,w_830/f_auto,q_auto/v1/mediacorp/cna/image/2024/05/01/computer_user.jpg?itok=gEvfy0to" alt="Shoes" /></figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                  More than S$370,000 recovered after banks, Singapore and Hong Kong police foil scam
+                    <div className="badge badge-primary">NEW</div>
+                  </h2>
+                  <p>The 70-year-old victim divulged his bank credentials to a scammer after being told his computer had been hacked and his bank accounts were used for illegal activities. </p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">CNA</div>  
+                    <div className="badge badge-outline">Newspaper</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div className="carousel-item">
+            <a href="https://www.businesstimes.com.sg/singapore/new-wave-phishing-smses-scam-103-victims-s161000-december" target="_blank" rel="noopener noreferrer">
+              <div className="card w-80 bg-base-100 shadow-xl  rounded-xl px-2 h-[600px]">
+                <figure><img src="https://d2kxlefydm4hr1.cloudfront.net/image/businesstimes/1f7910bee2e6faa863cde99541536ad9a3354ed4f39a41172a00e4ee08126c8c?w=854&f=webp" alt="Shoes" /></figure>
+                <div className="card-body">
+                  <h2 className="card-title">
+                  New wave of phishing SMSes scam 103 victims of S$161,000 in December
+                    <div className="badge badge-primary">NEW</div>
+                  </h2>
+                  <p>Scammers impersonated banks, attempting to get online banking usernames, passwords or one-time passwords (OTPs). </p>
+                  <div className="card-actions justify-end">
+                    <div className="badge badge-outline">The Business Times</div>  
+                    <div className="badge badge-outline">Newspaper</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
       
@@ -168,41 +237,42 @@ function Landing() {
       <div className="bg-white p-6 shadow-lg rounded-2xl">
         <h3 className="text-2xl font-bold mb-4 text-primary">Courses</h3>
         <div className="flex space-x-4">
-          <div className="card w-1/3 bg-base-100 shadow-xl">
-            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Course 1" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Course 1</h2>
-              <p>Description of Course 1.</p>
-              <div className="card-actions justify-end">
-                <Link to="/courses/1" className="btn btn-primary">View Course</Link>
+          <a href="https://eservices.isca.org.sg/CourseDetailClone?courseMasterId=a0g2t000000spcAAAQ&_ga=2.118586057.1137146298.1686012835-1182683973.1678158178 " className="w-1/3">
+            <div className="card bg-base-100 shadow-xl min-h-[450px]"> 
+              <figure><img src="https://eservices.isca.org.sg/servlet/servlet.FileDownload?file=00P2t00000R6USkEAN" alt="Course 1" /></figure>
+              <div className="card-body">
+                <h2 className="card-title">THINKING LIKE A FRAUDSTER TO PREVENT FRAUD</h2>
+                <p>by Institute of Singapore Chartered Accountants</p>
+                <div className="card-actions justify-end">
+                  <div className="btn btn-primary">View Course</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="card w-1/3 bg-base-100 shadow-xl">
-            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Course 2" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Course 2</h2>
-              <p>Description of Course 2.</p>
-              <div className="card-actions justify-end">
-                <Link to="/courses/2" className="btn btn-primary">View Course</Link>
+          </a>
+          <a href="https://www.ntuclearninghub.com/en-gb/-/course/fraud-misconduct-investigation-course" className="w-1/3">
+            <div className="card bg-base-100 shadow-xl min-h-[450px]"> 
+              <figure><img src="https://www.ntuclearninghub.com/documents/39367/39458/fraud-misconduct-investigation-course.jpg/eed49a70-e993-2847-65a7-2c9729aabbc9?t=1623209491050" alt="Course 2" /></figure>
+              <div className="card-body">
+                <h2 className="card-title">FRAUD & MISCONDUCT INVESTIGATION COURSE</h2>
+                <p>by NTUC Learning Hub</p>
+                <div className="card-actions justify-end">
+                  <div className="btn btn-primary">View Course</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="card w-1/3 bg-base-100 shadow-xl">
-            <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Course 3" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">Course 3</h2>
-              <p>Description of Course 3.</p>
-              <div className="card-actions justify-end">
-                <Link to="/courses/3" className="btn btn-primary">View Course</Link>
+          </a>
+          <a href="https://www.aidf.nus.edu.sg/education/professional-certificates-in-digital-financial-technology/fraud-detection-and-prevention/" className="w-1/3">
+            <div className="card bg-base-100 shadow-xl min-h-[400px]"> 
+              <figure><img src="https://finance.ec.europa.eu/sites/default/files/styles/oe_theme_medium_no_crop/public/2023-11/eudfp-cards-640x450.jpg?itok=0sU2wkI1" alt="Course 3" /></figure>
+              <div className="card-body">
+                <h2 className="card-title">HARNESS THE POTENTIAL OF FRAUD DETECTION AND PREVENTION</h2>
+                <p>by NUS Asian Institute of Digital Finance</p>
+                <div className="card-actions justify-end">
+                  <div className="btn btn-primary">View Course</div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="flex mt-4">
-          <Link to="/courses" className="w-full text-center shadow bg-gray-100 hover:bg-gray-300 font-bold py-3 px-4 rounded-xl">
-            View All Courses
-          </Link>
+          </a>
         </div>
       </div>
     </div>
