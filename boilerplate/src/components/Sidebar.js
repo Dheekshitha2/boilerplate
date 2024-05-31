@@ -14,6 +14,7 @@ function Sidebar({ isOpen, setSidebarOpen }) {
           <li><Link to="/dashboard" onClick={() => setSidebarOpen(false)}>Dashboard</Link></li>
           <li><Link to="/family" onClick={() => setSidebarOpen(false)}>Family</Link></li>
           <li><Link to="/courses" onClick={() => setSidebarOpen(false)}>Courses</Link></li>
+          <li><Link to="/scam-page" onClick={() => setSidebarOpen(false)}>Scam Page</Link></li>
         </ul>
         <div className="absolute bottom-4 left-4 w-72">
           <a href="https://form.gov.sg/63982e109841390011a59121" className="text-center font-semibold block w-full p-2 bg-red-500 text-white rounded-xl hover:bg-red-700 transition-colors duration-200" onClick={() => setSidebarOpen(false)} target="_blank" rel="noopener noreferrer">
