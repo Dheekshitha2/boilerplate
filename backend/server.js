@@ -10,11 +10,12 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const API_URL = process.env.API_URL || 'http://localhost:3000';
 const clickCounts = {};  // This object will store email click counts
 
 // Apply CORS middleware to allow connections from frontend
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: API_URL
 }));
 
 // Initialize OpenAI and Supabase clients
@@ -84,7 +85,7 @@ app.post('/generate-scam-email', async (req, res) => {
     }
 
     const token = generateToken(); // Generate token for each email
-    const verificationLink = `http://localhost:3000/scam-page?token=${token}`; // Append token to hyperlink
+    const verificationLink = `${process.env.API_URL || 'http://localhost:3000'}/scam-page?token=${token}`; // Use environment or default to localhost
 
     // Randomly generate a bank name, customer service rep name, and subject
     const banks = ['DBS', 'OCBC', 'UOB', 'Standard Chartered', 'HSBC'];
@@ -95,8 +96,7 @@ app.post('/generate-scam-email', async (req, res) => {
     const scamEmailPrompt = {
         messages: [
             { role: "system", content: "Generate a professional scam email for account verification without predefined content." },
-            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Please include the phrase "Click here" within the email only once. The start of the email should not have the line "Subject:"` }
-        ]
+            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Please include the phrase "Click here" within the email only once. The start of the email should not have the line "Subject:"` }]
     };
 
     const scamEmailContent = await generateChatResponse(scamEmailPrompt.messages);
@@ -104,19 +104,24 @@ app.post('/generate-scam-email', async (req, res) => {
     const formattedEmailContent = `
         <html>
             <body>
-                <p>${scamEmailContent.replace(/\n/g, '<br>').replace("click here", `<a href="${verificationLink}">click here</a>`)}</p>
+            <p>${scamEmailContent.replace(/\n/g, '<br>').replace(/click here/gi, `<a href="${verificationLink}">click here</a>`)}</p>
             </body>
         </html>`;
 
     const emailSent = await sendEmail(email, subject, formattedEmailContent);
     if (emailSent) {
-        // Store the token in the database associated with the user
-        await supabase
+        // Update the token and increment email_sent_count
+        const { error } = await supabase
             .from('family_members')
-            .update({ token })
+            .update({ token, email_sent_count: supabase.raw('email_sent_count + 1') })
             .eq('email', email);
 
-        res.send({ message: 'Scam email sent successfully!' });
+        if (error) {
+            console.error('Failed to update email count:', error);
+            res.status(500).send({ error: 'Failed to update email count.', details: error.message });
+        } else {
+            res.send({ message: 'Scam email sent successfully and count updated!' });
+        }
     } else {
         res.status(500).send({ error: 'Failed to send scam email.' });
     }
@@ -205,6 +210,11 @@ app.post('/submit-form', async (req, res) => {
         onlineTransactionFrequency
     } = req.body;
 
+    // Ensure numeric fields are either numbers or null if empty
+    const cleanSalaryRange = salaryRange ? parseInt(salaryRange, 10) : null;
+    const cleanScammedAmount = scammedAmount ? parseFloat(scammedAmount) : null;
+    const cleanAge = age ? parseInt(age, 10) : null;
+
     try {
         const { data, error } = await supabase
             .from('family_members')
@@ -212,7 +222,7 @@ app.post('/submit-form', async (req, res) => {
                 full_name: fullName,
                 email,
                 phone_number: phoneNumber,
-                age,
+                age: cleanAge,
                 gender,
                 relationship,
                 social_media: socialMedia,
@@ -220,15 +230,17 @@ app.post('/submit-form', async (req, res) => {
                 company_name: companyName,
                 work_email: workEmail,
                 work_phone: workPhone,
-                salary_range: salaryRange,
+                salary_range: cleanSalaryRange,
                 previous_scam_experience: previousScamExperience,
                 scammed_platform: scammedPlatform,
-                scammed_amount: scammedAmount,
+                scammed_amount: cleanScammedAmount,
                 protection_measures: protectionMeasures,
                 online_transaction_frequency: onlineTransactionFrequency
             }]);
 
-        if (error) throw error;
+        if (error) {
+            throw error;
+        }
         res.status(200).send({ message: 'Data inserted successfully', data });
     } catch (error) {
         console.error('Error inserting data into Supabase:', error.message);

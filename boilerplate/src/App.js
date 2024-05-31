@@ -26,7 +26,7 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/family" element={<Family />} />
-            <Route path="/scam-page" element={<ScamPage />} />
+            <Route path="/scam-page" />
             <Route path="/courses" element={<Courses />} />
             <Route path="/personal/:memberId" element={<PersonalPage />} /> 
           </Routes>
