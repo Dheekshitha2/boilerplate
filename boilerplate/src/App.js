@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import AddFamilyMemberForm from './pages/Family';
+
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -21,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/family" element={<AddFamilyMemberForm />} />
           </Routes>
         </div>
       </div>
