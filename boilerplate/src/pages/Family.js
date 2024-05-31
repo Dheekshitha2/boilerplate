@@ -1,105 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { Radar } from 'react-chartjs-2';
+import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 
-function AddFamilyMemberForm() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        relationship_type: ''
-    });
-    const [familyMembers, setFamilyMembers] = useState([]);
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-    useEffect(() => {
-        const fetchFamilyMembers = async () => {
-            try {
-                // Replace this URL with your actual endpoint that returns family member data
-                const response = await axios.get('http://localhost:5000/get-family-members');
-                setFamilyMembers(response.data);
-            } catch (error) {
-                console.error('Failed to fetch family members:', error);
-            }
-        };
+const FamilyPage = () => {
+  const familyMembers = [
+    {
+      name: "Hart Hagerty",
+      relationship: "Father",
+      avatar: "https://img.daisyui.com/tailwind-css-component-profile-2@56w.png",
+      vulnerabilityData: {
+        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        datasets: [{
+          label: '',
+          data: [80, 70, 90, 60, 55],
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+          fill: true
+        }]
+      },
+      link: "#"
+    },
+    {
+      name: "Brice Swyre",
+      relationship: "Brother",
+      avatar: "https://img.daisyui.com/tailwind-css-component-profile-3@56w.png",
+      vulnerabilityData: {
+        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        datasets: [{
+          label: '',
+          data: [65, 59, 70, 81, 56],
+          backgroundColor: 'rgba(53, 162, 235, 0.2)',
+          borderColor: 'rgba(53, 162, 235, 1)',
+          borderWidth: 1,
+          fill: true
+        }]
+      },
+      link: "#"
+    },
+    {
+      name: "Marjy Ferencz",
+      relationship: "Mother",
+      avatar: "https://img.daisyui.com/tailwind-css-component-profile-4@56w.png",
+      vulnerabilityData: {
+        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        datasets: [{
+          label: '',
+          data: [40, 45, 30, 70, 75],
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          fill: true
+        }]
+      },
+      link: "#"
+    },
+    {
+      name: "Yancy Tear",
+      relationship: "Sister",
+      avatar: "https://img.daisyui.com/tailwind-css-component-profile-5@56w.png",
+      vulnerabilityData: {
+        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        datasets: [{
+          label: '',
+          data: [85, 80, 95, 65, 60],
+          backgroundColor: 'rgba(255, 205, 86, 0.2)',
+          borderColor: 'rgba(255, 205, 86, 1)',
+          borderWidth: 1,
+          fill: true
+        }]
+      },
+      link: "#"
+    }
+  ];
 
-        fetchFamilyMembers();
-    }, []);
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5000/add-family-member', formData);
-            if (response.data) {
-                setFamilyMembers([...familyMembers, formData]);
-                alert('Family member added successfully!');
-                setFormData({ name: '', email: '', relationship_type: '' }); // Reset form
-            }
-        } catch (error) {
-            console.error('Error adding family member:', error);
-            alert('Failed to add family member.');
+  const options = {
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        enabled: false
+      }
+    },
+    scales: {
+      r: {
+        angleLines: {
+          display: false
+        },
+        ticks: {
+          display: false
+        },
+        pointLabels: {
+          display: true,
+          font: {
+            size: 14
+          }
         }
-    };
+      }
+    },
+    maintainAspectRatio: false,
+    aspectRatio: 1 // Adjust this value as needed to change size
+  };
 
-    return (
-        <div>
-            <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Name"
-                    required
-                    style={{ margin: '5px' }}
-                />
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Email"
-                    required
-                    style={{ margin: '5px' }}
-                />
-                <input
-                    type="text"
-                    name="relationship_type"
-                    value={formData.relationship_type}
-                    onChange={handleChange}
-                    placeholder="Relationship Type"
-                    required
-                    style={{ margin: '5px' }}
-                />
-                <button type="submit" style={{ margin: '5px' }}>Add Family Member</button>
-            </form>
-            <div>
-                <h2>Family Members</h2>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr style={{ backgroundColor: '#f0f0f0' }}>
-                            <th style={{ border: '1px solid black', padding: '8px' }}>Name</th>
-                            <th style={{ border: '1px solid black', padding: '8px' }}>Email</th>
-                            <th style={{ border: '1px solid black', padding: '8px' }}>Relationship Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {familyMembers.map((member, index) => (
-                            <tr key={index}>
-                                <td style={{ border: '1px solid black', padding: '8px' }}>{member.name}</td>
-                                <td style={{ border: '1px solid black', padding: '8px' }}>{member.email}</td>
-                                <td style={{ border: '1px solid black', padding: '8px' }}>{member.relationship_type}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+  return (
+    <div className="p-4 grid grid-cols-3 gap-4">
+      {familyMembers.map((member, index) => (
+        <div key={index} className="card w-96 bg-base-100 shadow-xl">
+          <figure className="px-10 pt-10">
+            <img src={member.avatar} alt={member.name} className="mask mask-squircle" />
+          </figure>
+          <div className="card-body items-center text-center">
+            <h2 className="card-title">{member.name}</h2>
+            <p>{member.relationship}</p>
+            <div className="w-full mt-10 mb-8">
+              <Radar data={member.vulnerabilityData} options={options} />
             </div>
+            <div className="card-actions">
+              <button className="btn btn-gray-100 " onClick={() => window.open(member.link, "_blank")}>Access Personal Page</button>
+            </div>
+          </div>
         </div>
-    );
+      ))}
+    </div>
+  );
 }
 
-export default AddFamilyMemberForm;
+export default FamilyPage;
