@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function RegistrationModal({ showModal, setShowModal }) {
     const [formData, setFormData] = useState({
@@ -56,11 +57,20 @@ function RegistrationModal({ showModal, setShowModal }) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        setShowModal(false); // Close the popup on form submit
+        try {
+            const response = await axios.post('http://localhost:5000/submit-form', formData);
+            setShowModal(false); // Close the modal
+            setShowSuccessMessage(true); // Display the success message
+            setTimeout(() => setShowSuccessMessage(false), 3000); // Hide the message after 3 seconds
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        }
     };
+
 
     if (!showModal) return null;
 
@@ -226,85 +236,86 @@ function RegistrationModal({ showModal, setShowModal }) {
                             </select>
                         </>
                     )}
-            <div className="flex justify-between items-center mb-6">
-                <label className="flex-1 text-left mb-4">Scammed before?</label>
-                <input
-                    type="checkbox"
-                    name="previousScamExperience"
-                    checked={formData.previousScamExperience}
-                    onChange={(e) => setFormData({ ...formData, previousScamExperience: e.target.checked })}
-                    className="checkbox checkbox-primary"
-                />
-            </div>
-            {formData.previousScamExperience && (
-            <>
-              <input
-                type="text"
-                name="scammedPlatform"
-                value={formData.scammedPlatform}
-                onChange={handleChange}
-                placeholder="Scammed Platform"
-                className="input input-bordered w-full mb-6 text-center bg-gray-200"
-              />
-              <input
-                type="number"
-                name="scammedAmount"
-                value={formData.scammedAmount}
-                onChange={handleChange}
-                placeholder="Scammed Amount"
-                className="input input-bordered w-full mb-6 text-center bg-gray-200"
-              />
-            </>
-          )}
-            <div className="mb-6">
-                <label className="block font-bold mb-6 mt-10 text-xl">Current Protection Measures</label>
-                <div className="flex flex-wrap gap-4">
-                    {['Antivirus', 'VPN', 'Two-factor Authentication', 'Firewall'].map((measure) => (
-                        <div key={measure} className="flex justify-between items-center border-b border-gray-300 pb-2 w-full">
-                            <label className="flex-1 text-left">{measure}</label>
+                    <div className="flex justify-between items-center mb-6">
+                        <label className="flex-1 text-left mb-4">Scammed before?</label>
+                        <input
+                            type="checkbox"
+                            name="previousScamExperience"
+                            checked={formData.previousScamExperience}
+                            onChange={(e) => setFormData({ ...formData, previousScamExperience: e.target.checked })}
+                            className="checkbox checkbox-primary"
+                        />
+                    </div>
+                    {formData.previousScamExperience && (
+                        <>
                             <input
-                                type="checkbox"
-                                value={measure}
-                                checked={formData.protectionMeasures.includes(measure)}
-                                onChange={handleProtectionMeasuresChange}
-                                className="checkbox checkbox-primary"
+                                type="text"
+                                name="scammedPlatform"
+                                value={formData.scammedPlatform}
+                                onChange={handleChange}
+                                placeholder="Scammed Platform"
+                                className="input input-bordered w-full mb-6 text-center bg-gray-200"
                             />
+                            <input
+                                type="number"
+                                name="scammedAmount"
+                                value={formData.scammedAmount}
+                                onChange={handleChange}
+                                placeholder="Scammed Amount"
+                                className="input input-bordered w-full mb-6 text-center bg-gray-200"
+                            />
+                        </>
+                    )}
+                    <div className="mb-6">
+                        <label className="block font-bold mb-6 mt-10 text-xl">Current Protection Measures</label>
+                        <div className="flex flex-wrap gap-4">
+                            {['Antivirus', 'VPN', 'Two-factor Authentication', 'Firewall'].map((measure) => (
+                                <div key={measure} className="flex justify-between items-center border-b border-gray-300 pb-2 w-full">
+                                    <label className="flex-1 text-left">{measure}</label>
+                                    <input
+                                        type="checkbox"
+                                        value={measure}
+                                        checked={formData.protectionMeasures.includes(measure)}
+                                        onChange={handleProtectionMeasuresChange}
+                                        className="checkbox checkbox-primary"
+                                    />
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </div>
+                    <select
+                        name="onlineTransactionFrequency"
+                        value={formData.onlineTransactionFrequency}
+                        onChange={handleChange}
+                        className="input input-bordered w-full mb-14 text-center bg-gray-200 mt-4"
+                        required
+                    >
+                        <option value="">Online Transaction Frequency</option>
+                        <option value="never">Never</option>
+                        <option value="rarely">Seldom</option>
+                        <option value="occasionally">Everyday</option>
+                        <option value="frequently">All the time</option>
+                    </select>
+                    <div className="flex justify-between space-x-4">
+                        <button
+                            type="submit"
+                            className="btn btn-primary rounded-lg bg-orange-400 hover:bg-orange-600 py-2 text-lg font-bold px-6 w-1/2"
+                        >
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                            className="btn btn-secondary rounded-lg bg-gray-100 hover:bg-gray-400 py-2 text-lg font-bold px-6 w-1/2 border-none mb-14"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+                {showSuccessMessage && <div className="text-center text-green-500 font-medium mt-4">Family member added successfully!</div>}
             </div>
-          <select
-            name="onlineTransactionFrequency"
-            value={formData.onlineTransactionFrequency}
-            onChange={handleChange}
-            className="input input-bordered w-full mb-14 text-center bg-gray-200 mt-4"
-            required
-          >
-            <option value="">Online Transaction Frequency</option>
-            <option value="never">Never</option>
-            <option value="rarely">Seldom</option>
-            <option value="occasionally">Everyday</option>
-            <option value="frequently">All the time</option>
-          </select>
-          <div className="flex justify-between space-x-4">
-            <button
-              type="submit"
-              className="btn btn-primary rounded-lg bg-orange-400 hover:bg-orange-600 py-2 text-lg font-bold px-6 w-1/2"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowModal(false)}
-              className="btn btn-secondary rounded-lg bg-gray-100 hover:bg-gray-400 py-2 text-lg font-bold px-6 w-1/2 border-none mb-14"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }
 
 export default RegistrationModal;
