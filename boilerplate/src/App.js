@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import AddFamilyMemberForm from './pages/Family';
-
+import ScamPage from './pages/ScamPage';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -24,6 +24,7 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/family" element={<AddFamilyMemberForm />} />
+            <Route path="/scam-page" element={<ScamPage />} />  {/* Updated this line */}
           </Routes>
         </div>
       </div>
