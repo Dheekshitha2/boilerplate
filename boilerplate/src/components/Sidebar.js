@@ -16,9 +16,9 @@ function Sidebar({ isOpen, setSidebarOpen }) {
           <li><Link to="/courses" onClick={() => setSidebarOpen(false)}>Courses</Link></li>
         </ul>
         <div className="absolute bottom-4 left-4 w-72">
-          <button className="w-full p-2 bg-red-500 text-white rounded-xl hover:bg-red-700 transition-colors duration-200" onClick={() => setSidebarOpen(false)}>
+          <a href="https://form.gov.sg/63982e109841390011a59121" className="text-center font-semibold block w-full p-2 bg-red-500 text-white rounded-xl hover:bg-red-700 transition-colors duration-200" onClick={() => setSidebarOpen(false)} target="_blank" rel="noopener noreferrer">
             Report a Fraud
-          </button>
+          </a>
         </div>
       </div>
       <div className="flex-grow" onClick={() => setSidebarOpen(false)}></div>

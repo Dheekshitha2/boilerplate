@@ -8,6 +8,7 @@ function RegistrationModal({ showModal, setShowModal }) {
         age: '',
         gender: '',
         relationship: '',
+        mostComfortableLanguage: '',
         socialMedia: [],
         occupation: '',
         companyName: '',
@@ -112,7 +113,7 @@ function RegistrationModal({ showModal, setShowModal }) {
                         className="input input-bordered w-full mb-6 text-center bg-gray-200"
                         required
                     >
-                        <option value="">Select Relationship</option>
+                        <option value="">Relationship</option>
                         <option value="wife">Wife</option>
                         <option value="husband">Husband</option>
                         <option value="mother">Mother</option>
@@ -123,6 +124,23 @@ function RegistrationModal({ showModal, setShowModal }) {
                         <option value="sister">Sister</option>
                         <option value="child">Son</option>
                         <option value="child">Daughter</option>
+                    </select>
+                    <select
+                        name="mostComfortableLanguage"
+                        value={formData.mostComfortableLanguage}
+                        onChange={handleChange}
+                        className="input input-bordered w-full mb-6 text-center bg-gray-200"
+                        required
+                    >
+                        <option value="">Most Comfortable Language</option>
+                        <option value="english">English</option>
+                        <option value="chinese">Chinese</option>
+                        <option value="malay">Malay</option>
+                        <option value="hindi">Hindi</option>
+                        <option value="tamil">Tamil</option>
+                        <option value="hokkien">Hokkien</option>
+                        <option value="cantonese">Cantonese</option>
+                        <option value="teochew">Teochew</option>
                     </select>
                     <div className="mb-6">
                         <label className="block font-bold mb-8 mt-10 text-2xl">Social Media Usage</label>
