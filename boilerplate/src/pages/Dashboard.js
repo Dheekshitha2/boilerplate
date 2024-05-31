@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import RegistrationModal from '../components/RegistrationModal';
+import FloatingButton from '../components/FloatingButton';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 
 ChartJS.register(
@@ -15,8 +17,10 @@ ChartJS.register(
 );
 
 function Dashboard() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
-    <div className="bg-white mx-6 p-4 flex flex-col space-y-4 shadow-lg rounded-2xl">
+    <div className="relative bg-white mx-6 p-4 flex flex-col space-y-4 shadow-lg rounded-2xl">
       <h2 className="text-3xl font-bold mb-4 text-primary">Dashboard</h2>
       <div className="overflow-x-auto">
         <table className="table">
@@ -153,6 +157,12 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
+
+      {/* Plus Button to Open Registration Modal */}
+      <FloatingButton onClick={() => setShowModal(true)} />
+
+      {/* Registration Modal */}
+      {showModal && <RegistrationModal showModal={showModal} setShowModal={setShowModal} />}
     </div>
   );
 }
