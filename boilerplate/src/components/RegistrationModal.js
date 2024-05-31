@@ -64,7 +64,7 @@ function RegistrationModal({ showModal, setShowModal }) {
     if (!showModal) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 z-50 overflow-hidden">
             <div className="bg-white p-12 rounded-2xl shadow-lg w-2/3 max-w-5xl overflow-auto max-h-full mt-28">
                 <h3 className="text-3xl text-center font-bold mb-4 text-primary">New Member</h3>
                 <h4 className="text-lg text-center font-semibold mb-8">Fraud proof your loved ones</h4>
@@ -259,7 +259,7 @@ function RegistrationModal({ showModal, setShowModal }) {
             name="onlineTransactionFrequency"
             value={formData.onlineTransactionFrequency}
             onChange={handleChange}
-            className="input input-bordered w-full mb-10 text-center bg-gray-200 mt-4"
+            className="input input-bordered w-full mb-14 text-center bg-gray-200 mt-4"
             required
           >
             <option value="">Online Transaction Frequency</option>
