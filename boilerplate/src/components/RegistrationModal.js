@@ -58,11 +58,12 @@ function RegistrationModal({ showModal, setShowModal }) {
     };
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const API_URL = process.env.BACKEND_URL || 'http://localhost:5000';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/submit-form', formData);
+            const response = await axios.post(`${API_URL}/submit-form`, formData);
             setShowModal(false); // Close the modal
             setShowSuccessMessage(true); // Display the success message
             setTimeout(() => setShowSuccessMessage(false), 3000); // Hide the message after 3 seconds

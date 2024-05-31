@@ -6,7 +6,7 @@ import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Family from './pages/Family';
 import ScamPage from './pages/ScamPage';
-import Courses from './pages/Courses';  
+import Courses from './pages/Courses';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -25,8 +25,8 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/family" element={<Family />} />
-            <Route path="/scam-page" element={<ScamPage />} />
-            <Route path="/courses" element={<Courses />} />  
+            <Route path="/scam-page" />
+            <Route path="/courses" element={<Courses />} />
           </Routes>
         </div>
       </div>
