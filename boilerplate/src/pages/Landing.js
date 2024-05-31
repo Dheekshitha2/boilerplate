@@ -262,7 +262,7 @@ function Landing() {
             </div>
           </a>
           <a href="https://www.aidf.nus.edu.sg/education/professional-certificates-in-digital-financial-technology/fraud-detection-and-prevention/" className="w-1/3">
-            <div className="card bg-base-100 shadow-xl min-h-[400px]"> 
+            <div className="card bg-base-100 shadow-xl min-h-[450px]"> 
               <figure><img src="https://finance.ec.europa.eu/sites/default/files/styles/oe_theme_medium_no_crop/public/2023-11/eudfp-cards-640x450.jpg?itok=0sU2wkI1" alt="Course 3" /></figure>
               <div className="card-body">
                 <h2 className="card-title">HARNESS THE POTENTIAL OF FRAUD DETECTION AND PREVENTION</h2>

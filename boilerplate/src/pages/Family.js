@@ -1,6 +1,7 @@
 import React from 'react';
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
+import { Link } from 'react-router-dom';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -119,7 +120,7 @@ const FamilyPage = () => {
               <Radar data={member.vulnerabilityData} options={options} />
             </div>
             <div className="card-actions">
-              <button className="btn btn-gray-100 " onClick={() => window.open(member.link, "_blank")}>Access Personal Page</button>
+            <Link to={`/personal/${member.id}`} className="btn btn-primary">Access Personal Page</Link>
             </div>
           </div>
         </div>
