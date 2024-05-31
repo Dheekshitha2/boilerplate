@@ -27,14 +27,6 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// List of common spam trigger words
-const spamTriggers = ["free", "guaranteed", "risk-free", "urgent", "click here", "subscribe", "credit card", "password"];
-
-// Function to check for spam triggers
-function containsSpam(content) {
-    return spamTriggers.some(trigger => content.toLowerCase().includes(trigger));
-}
-
 // Modify the generateChatResponse function to explicitly instruct the model to avoid spam-like content
 async function generateChatResponse(messages) {
     try {
@@ -80,6 +72,10 @@ async function sendEmail(to, subject, htmlContent) {
     }
 }
 
+// Generate a unique token for each user email
+function generateToken() {
+    return require('crypto').randomBytes(20).toString('hex');
+}
 
 // API endpoint for generating scam emails
 app.post('/generate-scam-email', async (req, res) => {
@@ -88,38 +84,45 @@ app.post('/generate-scam-email', async (req, res) => {
         return res.status(400).send({ error: "Email not provided" });
     }
 
+    const token = generateToken(); // Generate token for each email
+    const verificationLink = `http://localhost:3000/scam-page?token=${token}`; // Append token to hyperlink
+
     // Randomly generate a bank name, customer service rep name, and subject
     const banks = ['DBS', 'OCBC', 'UOB', 'Standard Chartered', 'HSBC'];
     const subjects = ['Account Verification Required', 'Immediate Action Required: Verify Your Account', 'Security Alert: Verify Your Banking Details'];
     const bank = banks[Math.floor(Math.random() * banks.length)];
     const subject = subjects[Math.floor(Math.random() * subjects.length)];
 
-    // Dynamic email content generation
     const scamEmailPrompt = {
         messages: [
             { role: "system", content: "Generate a professional scam email for account verification without predefined content." },
-            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Exclude the line "Subject:" at the start of the email` }
+            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Please include the phrase "Click here" within the email only once. The start of the email should not have the line "Subject:"` }
         ]
     };
 
     const scamEmailContent = await generateChatResponse(scamEmailPrompt.messages);
 
-    // Format the email content using HTML for better formatting control
+    // Correctly format the HTML content, including the hyperlink and replacing newlines with HTML breaks
     const formattedEmailContent = `
         <html>
             <body>
-                <p>${scamEmailContent.replace(/\n/g, '<br>')}</p>
+                <p>${scamEmailContent.replace(/\n/g, '<br>').replace("click here", `<a href="${verificationLink}">click here</a>`)}</p>
             </body>
         </html>`;
 
     const emailSent = await sendEmail(email, subject, formattedEmailContent);
     if (emailSent) {
+        // Store the token in the database associated with the user
+        await supabase
+            .from('family_members')
+            .update({ token })
+            .eq('email', email);
+
         res.send({ message: 'Scam email sent successfully!' });
     } else {
         res.status(500).send({ error: 'Failed to send scam email.' });
     }
 });
-
 
 
 app.post('/add-family-member', async (req, res) => {
@@ -132,6 +135,40 @@ app.post('/add-family-member', async (req, res) => {
         res.send({ message: 'Family member added successfully!', data });
     } catch (error) {
         console.error('Error inserting into Supabase:', error.message);
+        res.status(500).send({ error: error.message });
+    }
+});
+
+// Track click endpoint
+app.post('/track-click', async (req, res) => {
+    const { token } = req.body;  // Receive token from the frontend
+
+    try {
+        const { data, error } = await supabase
+            .from('family_members')
+            .select('*')
+            .eq('token', token);
+
+        if (error) throw error;
+        if (data.length === 0) {
+            return res.status(404).send({ message: 'User not found.' });
+        }
+
+        const user = data[0];
+        const updateData = {
+            scam_success: (user.scam_success || 0) + 1  // Increment scam_success by 1 or initialize it if not present
+        };
+
+        const { error: updateError } = await supabase
+            .from('family_members')
+            .update(updateData)
+            .eq('id', user.id);
+
+        if (updateError) throw updateError;
+
+        res.send({ message: 'Scam success count updated successfully!', count: updateData.scam_success });
+    } catch (error) {
+        console.error('Error tracking click:', error.message);
         res.status(500).send({ error: error.message });
     }
 });
