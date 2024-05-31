@@ -173,6 +173,32 @@ app.post('/track-click', async (req, res) => {
     }
 });
 
+// API endpoint for translating text
+app.post('/translate-text', async (req, res) => {
+    const { text, targetLanguage } = req.body;
+    if (!text || !targetLanguage) {
+        return res.status(400).send({ error: "Text or target language not provided" });
+    }
+
+    try {
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                { role: "system", content: "Translate the following text." },
+                { role: "user", content: text }
+            ],
+            max_tokens: 1024,
+            stop: ["\n", "<|endoftext|>"]
+        });
+        let translatedText = completion.choices[0].message.content;
+        res.send({ translatedText });
+    } catch (error) {
+        console.error('Failed to translate text:', error);
+        res.status(500).send({ error: 'Failed to translate text.' });
+    }
+});
+
+
 
 // Root endpoint for basic server response
 app.get('/', (req, res) => {
