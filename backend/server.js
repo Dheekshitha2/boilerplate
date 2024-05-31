@@ -236,6 +236,26 @@ app.post('/submit-form', async (req, res) => {
     }
 });
 
+// API endpoint to fetch all emails from the database
+app.get('/get-all-emails', async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('family_members')
+            .select('email');
+
+        if (error) {
+            console.error('Failed to fetch emails:', error.message);
+            return res.status(500).send({ error: 'Failed to retrieve emails from database', details: error.message });
+        }
+
+        // Return the list of emails
+        res.send(data.map(user => user.email));
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        res.status(500).send({ error: 'Unexpected error occurred', details: error.message });
+    }
+});
+
 
 // Root endpoint for basic server response
 app.get('/', (req, res) => {
