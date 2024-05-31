@@ -1,4 +1,3 @@
-// Import necessary modules using CommonJS syntax
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -13,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const clickCounts = {};  // This object will store email click counts
 
-// Apply CORS middleware to allow connections from your frontend
+// Apply CORS middleware to allow connections from frontend
 app.use(cors({
     origin: 'http://localhost:3000'
 }));
@@ -54,7 +53,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Define function to send emails
+// Function to send emails
 async function sendEmail(to, subject, htmlContent) {
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -102,7 +101,6 @@ app.post('/generate-scam-email', async (req, res) => {
 
     const scamEmailContent = await generateChatResponse(scamEmailPrompt.messages);
 
-    // Correctly format the HTML content, including the hyperlink and replacing newlines with HTML breaks
     const formattedEmailContent = `
         <html>
             <body>
@@ -198,6 +196,45 @@ app.post('/translate-text', async (req, res) => {
     }
 });
 
+// API endpoint to handle form submissions
+app.post('/submit-form', async (req, res) => {
+    const {
+        fullName, email, phoneNumber, age, gender, relationship, socialMedia,
+        occupation, companyName, workEmail, workPhone, salaryRange,
+        previousScamExperience, scammedPlatform, scammedAmount, protectionMeasures,
+        onlineTransactionFrequency
+    } = req.body;
+
+    try {
+        const { data, error } = await supabase
+            .from('family_members')
+            .insert([{
+                full_name: fullName,
+                email,
+                phone_number: phoneNumber,
+                age,
+                gender,
+                relationship,
+                social_media: socialMedia,
+                occupation,
+                company_name: companyName,
+                work_email: workEmail,
+                work_phone: workPhone,
+                salary_range: salaryRange,
+                previous_scam_experience: previousScamExperience,
+                scammed_platform: scammedPlatform,
+                scammed_amount: scammedAmount,
+                protection_measures: protectionMeasures,
+                online_transaction_frequency: onlineTransactionFrequency
+            }]);
+
+        if (error) throw error;
+        res.status(200).send({ message: 'Data inserted successfully', data });
+    } catch (error) {
+        console.error('Error inserting data into Supabase:', error.message);
+        res.status(500).send({ error: 'Failed to insert data', message: error.message });
+    }
+});
 
 
 // Root endpoint for basic server response
