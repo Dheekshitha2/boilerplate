@@ -21,13 +21,13 @@ function Landing() {
   return (
 
     <div className="container mx-auto p-4 flex flex-col space-y-4">
-      <p className="text-4xl font-bold text-primary mb-4">Hi, Jessica</p>
+      <p className="text-5xl font-bold text-primary mb-4 ml-4">Hi, Jessica</p>
       <div className="bg-white p-6 shadow-lg rounded-2xl">
         {/* Content Columns */}
         <div className="flex flex-grow">
           {/* First Column */}
           <div className="flex-1 mr-8">
-            <p className="text-left font-bold text-xl mb-12 align-top text-primary">Monthly Insights</p>
+            <p className="text-left font-bold text-2xl mb-12 align-top text-primary">Monthly Insights</p>
 
             <div className="flex justify-center mt-4">
               <p className="text-center">Fraud activities are at</p>
@@ -69,7 +69,7 @@ function Landing() {
       </div>
       {/* Second Container - Horizontal Scroll for Family Members */}
       <div className="bg-white p-6 shadow-lg rounded-2xl">
-        <h3 className="text-xl font-bold mb-4 text-primary">Family Members</h3>
+        <h3 className="text-2xl font-bold mb-4 text-primary">My Family</h3>
         <div className="flex overflow-x-auto space-x-4">
           <div className="bg-gray-100 p-4 shadow-inner rounded-xl flex-grow flex w-2/3">
 
@@ -120,7 +120,7 @@ function Landing() {
 
       {/* Third Container - Articles and YouTube Videos */}
       <div className="bg-white p-6 shadow-lg rounded-2xl">
-        <h3 className="text-xl font-bold mb-4 text-primary">Latest Info</h3>
+        <h3 className="text-2xl font-bold mb-4 text-primary">Latest Info</h3>
         <div className="carousel carousel-center rounded-box">
           <div className="carousel-item">
             <div className="card w-96 bg-base-100 shadow-xl">
@@ -166,7 +166,7 @@ function Landing() {
       
       {/* Fourth Container - Courses */}
       <div className="bg-white p-6 shadow-lg rounded-2xl">
-        <h3 className="text-xl font-bold mb-4 text-primary">Courses</h3>
+        <h3 className="text-2xl font-bold mb-4 text-primary">Courses</h3>
         <div className="flex space-x-4">
           <div className="card w-1/3 bg-base-100 shadow-xl">
             <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Course 1" /></figure>
