@@ -64,14 +64,13 @@ function RegistrationModal({ showModal, setShowModal }) {
         e.preventDefault();
         try {
             const response = await axios.post(`${API_URL}/submit-form`, formData);
-            setShowModal(false); // Close the modal
-            setShowSuccessMessage(true); // Display the success message
-            setTimeout(() => setShowSuccessMessage(false), 3000); // Hide the message after 3 seconds
+            setShowModal(false);
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (error) {
             console.error('Error submitting form:', error);
         }
     };
-
 
     if (!showModal) return null;
 
