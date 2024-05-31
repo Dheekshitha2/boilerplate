@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
 import RegistrationModal from '../components/RegistrationModal';
 import FloatingButton from '../components/FloatingButton';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+import LevelBadge from '../components/LevelBadge'; // Import the LevelBadge component
 
 function Dashboard() {
   const [showModal, setShowModal] = useState(false);
@@ -22,42 +10,38 @@ function Dashboard() {
   const members = [
     {
       name: 'Hart Hagerty',
-      location: 'United States',
       relationship: 'Father',
-      favoriteColor: 'Purple',
       riskLevel: 'High',
       scamAttempts: 10,
       scamFails: 7,
+      lastEmailStatus: 'Clicked',
       avatar: 'https://img.daisyui.com/tailwind-css-component-profile-2@56w.png'
     },
     {
       name: 'Brice Swyre',
-      location: 'China',
       relationship: 'Brother',
-      favoriteColor: 'Red',
       riskLevel: 'Moderate',
       scamAttempts: 5,
       scamFails: 2,
+      lastEmailStatus: 'Delivered',
       avatar: 'https://img.daisyui.com/tailwind-css-component-profile-3@56w.png'
     },
     {
       name: 'Marjy Ferencz',
-      location: 'Russia',
       relationship: 'Mother',
-      favoriteColor: 'Crimson',
       riskLevel: 'Low',
       scamAttempts: 3,
       scamFails: 0,
+      lastEmailStatus: 'Ignored',
       avatar: 'https://img.daisyui.com/tailwind-css-component-profile-4@56w.png'
     },
     {
       name: 'Yancy Tear',
-      location: 'Brazil',
       relationship: 'Sister',
-      favoriteColor: 'Indigo',
       riskLevel: 'High',
       scamAttempts: 8,
       scamFails: 6,
+      lastEmailStatus: 'Clicked',
       avatar: 'https://img.daisyui.com/tailwind-css-component-profile-5@56w.png'
     }
   ];
@@ -79,14 +63,13 @@ function Dashboard() {
                   <input type="checkbox" className="checkbox" />
                 </label>
               </th>
-              <th className="w-1/4 text-center">Name</th>
-              <th className="w-1/6 text-center">Relationship</th>
-              <th className="w-1/6 text-center">Favorite Color</th>
+              <th className="w-1/4 text-left">Family</th>
               <th className="w-1/6 text-center">Scam Attempts</th>
               <th className="w-1/6 text-center">Scam Failures</th>
               <th className="w-1/6 text-center">Fail Rate</th>
+              <th className="w-1/6 text-center">Last Email Status</th>
+              <th className="w-1/6 text-center">Alert Level</th>
               <th className="w-1/6 text-center">Risk Level</th>
-              <th className="w-12 text-center"></th>
             </tr>
           </thead>
           <tbody>
@@ -106,19 +89,23 @@ function Dashboard() {
                     </div>
                     <div>
                       <div className="font-bold">{member.name}</div>
-                      <div className="text-sm opacity-50">{member.location}</div>
+                      <div className="text-sm opacity-50">{member.relationship}</div>
                     </div>
                   </div>
                 </td>
-                <td className="w-1/6 text-center">{member.relationship}</td>
-                <td className="w-1/6 text-center">{member.favoriteColor}</td>
                 <td className="w-1/6 text-center">{member.scamAttempts}</td>
                 <td className="w-1/6 text-center">{member.scamFails}</td>
                 <td className="w-1/6 text-center">{((member.scamFails / member.scamAttempts) * 100).toFixed(2)}%</td>
                 <td className="w-1/6 text-center">
-                  <span className={`badge ${member.riskLevel === 'High' ? 'badge-error' : member.riskLevel === 'Moderate' ? 'badge-warning' : 'badge-success'} badge-sm`}>
-                    {member.riskLevel} Risk
+                  <span className="badge badge-outline w-28">
+                    {member.lastEmailStatus}
                   </span>
+                </td>
+                <td className="w-1/6 text-center">
+                  <LevelBadge level={member.riskLevel} />
+                </td>
+                <td className="w-1/6 text-center">
+                  <LevelBadge level={member.riskLevel} />
                 </td>
                 <th className="w-12 text-center">
                   <button className="btn btn-ghost btn-xs" onClick={() => handleEditMember(member)}>•••</button>
