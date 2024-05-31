@@ -1,14 +1,22 @@
 // Import necessary modules using CommonJS syntax
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 const OpenAI = require('openai');
+const nodemailer = require('nodemailer');
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const clickCounts = {};  // This object will store email click counts
+
+// Apply CORS middleware to allow connections from your frontend
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 
 // Initialize OpenAI and Supabase clients
 const openai = new OpenAI({
@@ -19,12 +27,23 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Define an async function to handle OpenAI chat completions
+// List of common spam trigger words
+const spamTriggers = ["free", "guaranteed", "risk-free", "urgent", "click here", "subscribe", "credit card", "password"];
+
+// Function to check for spam triggers
+function containsSpam(content) {
+    return spamTriggers.some(trigger => content.toLowerCase().includes(trigger));
+}
+
+// Modify the generateChatResponse function to explicitly instruct the model to avoid spam-like content
 async function generateChatResponse(messages) {
     try {
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",  // Adjust model as needed
-            messages: messages
+            model: "gpt-3.5-turbo",
+            messages: [
+                ...messages,
+                { role: "system", content: "Generate the email ensuring it does not contain spam-like language such as 'free', 'guarantee', or 'risk-free'." }
+            ]
         });
         return completion.choices[0].message.content;
     } catch (error) {
@@ -33,20 +52,88 @@ async function generateChatResponse(messages) {
     }
 }
 
+
+// Setup nodemailer transport
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // or another email provider
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+// Define function to send emails
+async function sendEmail(to, subject, htmlContent) {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: to,
+        subject: subject,
+        html: htmlContent
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        return true;
+    } catch (error) {
+        console.error('Failed to send email:', error);
+        return false;
+    }
+}
+
+
 // API endpoint for generating scam emails
 app.post('/generate-scam-email', async (req, res) => {
-    const topic = req.body.topic;  // Expect a topic for the scam email in the request body
-    if (!topic) {
-        return res.status(400).send({ error: "No topic provided" });
+    const { email } = req.body;  // Email to send the scam email to
+    if (!email) {
+        return res.status(400).send({ error: "Email not provided" });
     }
+
+    // Randomly generate a bank name, customer service rep name, and subject
+    const banks = ['DBS', 'OCBC', 'UOB', 'Standard Chartered', 'HSBC'];
+    const subjects = ['Account Verification Required', 'Immediate Action Required: Verify Your Account', 'Security Alert: Verify Your Banking Details'];
+    const bank = banks[Math.floor(Math.random() * banks.length)];
+    const subject = subjects[Math.floor(Math.random() * subjects.length)];
+
+    // Dynamic email content generation
     const scamEmailPrompt = {
         messages: [
-            { role: "system", content: "You are a creative assistant." },
-            { role: "user", content: `Create a fake scam email about ${topic}.` }
+            { role: "system", content: "Generate a professional scam email for account verification without predefined content." },
+            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Exclude the line "Subject:" at the start of the email` }
         ]
     };
-    const responseText = await generateChatResponse(scamEmailPrompt.messages);
-    res.send({ scamEmail: responseText });
+
+    const scamEmailContent = await generateChatResponse(scamEmailPrompt.messages);
+
+    // Format the email content using HTML for better formatting control
+    const formattedEmailContent = `
+        <html>
+            <body>
+                <p>${scamEmailContent.replace(/\n/g, '<br>')}</p>
+            </body>
+        </html>`;
+
+    const emailSent = await sendEmail(email, subject, formattedEmailContent);
+    if (emailSent) {
+        res.send({ message: 'Scam email sent successfully!' });
+    } else {
+        res.status(500).send({ error: 'Failed to send scam email.' });
+    }
+});
+
+
+
+app.post('/add-family-member', async (req, res) => {
+    const { name, email, relationship_type } = req.body;
+    try {
+        const { data, error } = await supabase
+            .from('family_members')
+            .insert([{ name, email, relationship_type }]);
+        if (error) throw error;
+        res.send({ message: 'Family member added successfully!', data });
+    } catch (error) {
+        console.error('Error inserting into Supabase:', error.message);
+        res.status(500).send({ error: error.message });
+    }
 });
 
 
