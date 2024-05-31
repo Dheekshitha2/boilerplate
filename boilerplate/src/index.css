@@ -177,6 +177,5 @@ body.dark ::-webkit-scrollbar-corner {
 }
 
 .avatar .w-12 {
-  border-radius: 12px;
-  /* Adjust as needed to create the squircle shape */
+  border-radius: 12px; 
 }
