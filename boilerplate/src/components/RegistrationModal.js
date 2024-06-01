@@ -58,7 +58,7 @@ function RegistrationModal({ showModal, setShowModal }) {
     };
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const API_URL = process.env.BACKEND_URL || 'http://localhost:5000';
+    const API_URL = 'https://fraud-zero-1.fly.dev';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
