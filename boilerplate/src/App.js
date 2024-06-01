@@ -11,9 +11,11 @@ import PersonalPage from './pages/PersonalPage';
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
+
   const handleMenuClick = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
 
   return (
     <Router>
