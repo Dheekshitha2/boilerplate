@@ -1,4 +1,3 @@
-// FamilyMemberCard.js
 import React from 'react';
 import { Radar } from 'react-chartjs-2';
 import 'chart.js/auto'; // Import the default setup of chart.js
