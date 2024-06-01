@@ -279,18 +279,24 @@ app.get('/get-all-emails', async (req, res) => {
     }
 });
 
-app.get('/family-members', async (req, res) => {
+// Get all family members
+app.get('/api/family-members', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('family_members')
             .select('*');
-        if (error) throw error;
+
+        if (error) {
+            throw error;
+        }
+
         res.json(data);
     } catch (error) {
-        console.error('Failed to retrieve family members:', error.message);
-        res.status(500).send({ error: 'Failed to retrieve data' });
+        console.error('Failed to fetch family members:', error.message);
+        res.status(500).send({ error: 'Failed to retrieve family members' });
     }
 });
+
 
 
 // Root endpoint for basic server response

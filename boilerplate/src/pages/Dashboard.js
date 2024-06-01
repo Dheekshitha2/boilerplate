@@ -53,7 +53,7 @@ function Dashboard() {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
-                        <img src={member.avatar || 'default-avatar.png'} alt={`${member.full_name} Avatar`} />
+                        <img src="/default-avatar.png" alt={`${member.full_name} Avatar`} />
                       </div>
                     </div>
                     <div>
@@ -69,7 +69,7 @@ function Dashboard() {
                   <LevelBadge level={member.scam_success / member.email_sent_count > 0.3 ? 'High' : 'Low'} />
                 </td>
                 <td className="w-1/6 text-center">
-                  <LevelBadge level={member.riskLevel} />  {/* Display risk level using the LevelBadge */}
+                  <LevelBadge level={member.risk_level} />  {/* Display risk level using the LevelBadge */}
                 </td>
               </tr>
             ))}
