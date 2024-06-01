@@ -14,7 +14,7 @@ const clickCounts = {};  // This object will store email click counts
 
 // Apply CORS middleware to allow connections from frontend
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: "https://fraud-zero.vercel.app"
 }));
 
 // Initialize OpenAI and Supabase clients
@@ -83,8 +83,30 @@ app.post('/generate-scam-email', async (req, res) => {
         return res.status(400).send({ error: "Email not provided" });
     }
 
-    const token = generateToken(); // Generate token for each email
-    const verificationLink = `http://localhost:3000/scam-page?token=${token}`; // Append token to hyperlink
+    // Check if the user already has a token
+    let { data: userData, error: userError } = await supabase
+        .from('family_members')
+        .select('token')
+        .eq('email', email)
+        .single();
+
+    let token;
+    if (userError || !userData || !userData.token) {
+        token = generateToken();  // Generate new token if none exists
+        // Update the user with the new token
+        const { error: tokenError } = await supabase
+            .from('family_members')
+            .update({ token })
+            .eq('email', email);
+        if (tokenError) {
+            console.error('Failed to update token:', tokenError);
+            return res.status(500).send({ error: 'Failed to update token in the database.', details: tokenError.message });
+        }
+    } else {
+        token = userData.token;  // Use existing token
+    }
+
+    const verificationLink = `https://fraud-zero.vercel.app/scam-page?token=${token}`;
 
     // Randomly generate a bank name, customer service rep name, and subject
     const banks = ['DBS', 'OCBC', 'UOB', 'Standard Chartered', 'HSBC'];
@@ -95,8 +117,7 @@ app.post('/generate-scam-email', async (req, res) => {
     const scamEmailPrompt = {
         messages: [
             { role: "system", content: "Generate a professional scam email for account verification without predefined content." },
-            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Please include the phrase "Click here" within the email only once. The start of the email should not have the line "Subject:"` }
-        ]
+            { role: "user", content: `Craft a scam email from ${bank} Bank with the subject "${subject}" requesting urgent account verification to maintain service continuity. Exclude any contact numbers. Please include the phrase "Click here" within the email only once. The start of the email should not have the line "Subject:"` }]
     };
 
     const scamEmailContent = await generateChatResponse(scamEmailPrompt.messages);
@@ -110,13 +131,26 @@ app.post('/generate-scam-email', async (req, res) => {
 
     const emailSent = await sendEmail(email, subject, formattedEmailContent);
     if (emailSent) {
-        // Store the token in the database associated with the user
-        await supabase
+        // Update the token and increment email_sent_count
+        const { data: userData } = await supabase
             .from('family_members')
-            .update({ token })
+            .select('email_sent_count')
+            .eq('email', email)
+            .single();
+
+        const newCount = userData.email_sent_count + 1;
+
+        const { data, error } = await supabase
+            .from('family_members')
+            .update({ token: token, email_sent_count: newCount })
             .eq('email', email);
 
-        res.send({ message: 'Scam email sent successfully!' });
+        if (error) {
+            console.error('Failed to update email count:', error);
+            res.status(500).send({ error: 'Failed to update email count.', details: error.message });
+        } else {
+            res.send({ message: 'Scam email sent successfully and count updated!' });
+        }
     } else {
         res.status(500).send({ error: 'Failed to send scam email.' });
     }
@@ -139,37 +173,38 @@ app.post('/add-family-member', async (req, res) => {
 
 // Track click endpoint
 app.post('/track-click', async (req, res) => {
-    const { token } = req.body;  // Receive token from the frontend
-
-    try {
-        const { data, error } = await supabase
-            .from('family_members')
-            .select('*')
-            .eq('token', token);
-
-        if (error) throw error;
-        if (data.length === 0) {
-            return res.status(404).send({ message: 'User not found.' });
-        }
-
-        const user = data[0];
-        const updateData = {
-            scam_success: (user.scam_success || 0) + 1  // Increment scam_success by 1 or initialize it if not present
-        };
-
-        const { error: updateError } = await supabase
-            .from('family_members')
-            .update(updateData)
-            .eq('id', user.id);
-
-        if (updateError) throw updateError;
-
-        res.send({ message: 'Scam success count updated successfully!', count: updateData.scam_success });
-    } catch (error) {
-        console.error('Error tracking click:', error.message);
-        res.status(500).send({ error: error.message });
+    const { token } = req.body;
+    if (!token) {
+        return res.status(400).send({ error: "Token not provided" });
     }
+
+    // Fetch user by token
+    const { data: userData, error: fetchError } = await supabase
+        .from('family_members')
+        .select('*')
+        .eq('token', token)
+        .single();
+
+    if (fetchError || !userData) {
+        console.error('User not found:', fetchError);
+        return res.status(404).send({ error: 'User not found.', details: fetchError ? fetchError.message : 'No user with this token.' });
+    }
+
+    // Increment scam_success count
+    const newScamSuccessCount = (userData.scam_success || 0) + 1;
+    const { error: updateError } = await supabase
+        .from('family_members')
+        .update({ scam_success: newScamSuccessCount })
+        .eq('id', userData.id);
+
+    if (updateError) {
+        console.error('Failed to increment scam success counter:', updateError);
+        return res.status(500).send({ error: 'Failed to update scam success counter.', details: updateError.message });
+    }
+
+    res.send({ message: 'Scam success count updated successfully!', count: newScamSuccessCount });
 });
+
 
 // API endpoint for translating text
 app.post('/translate-text', async (req, res) => {
@@ -205,6 +240,11 @@ app.post('/submit-form', async (req, res) => {
         onlineTransactionFrequency
     } = req.body;
 
+    // Ensure numeric fields are either numbers or null if empty
+    const cleanSalaryRange = salaryRange ? parseInt(salaryRange, 10) : null;
+    const cleanScammedAmount = scammedAmount ? parseFloat(scammedAmount) : null;
+    const cleanAge = age ? parseInt(age, 10) : null;
+
     try {
         const { data, error } = await supabase
             .from('family_members')
@@ -212,7 +252,7 @@ app.post('/submit-form', async (req, res) => {
                 full_name: fullName,
                 email,
                 phone_number: phoneNumber,
-                age,
+                age: cleanAge,
                 gender,
                 relationship,
                 social_media: socialMedia,
@@ -220,15 +260,17 @@ app.post('/submit-form', async (req, res) => {
                 company_name: companyName,
                 work_email: workEmail,
                 work_phone: workPhone,
-                salary_range: salaryRange,
+                salary_range: cleanSalaryRange,
                 previous_scam_experience: previousScamExperience,
                 scammed_platform: scammedPlatform,
-                scammed_amount: scammedAmount,
+                scammed_amount: cleanScammedAmount,
                 protection_measures: protectionMeasures,
                 online_transaction_frequency: onlineTransactionFrequency
             }]);
 
-        if (error) throw error;
+        if (error) {
+            throw error;
+        }
         res.status(200).send({ message: 'Data inserted successfully', data });
     } catch (error) {
         console.error('Error inserting data into Supabase:', error.message);

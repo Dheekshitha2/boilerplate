@@ -62,15 +62,14 @@ function RegistrationModal({ showModal, setShowModal }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/submit-form', formData);
-            setShowModal(false); // Close the modal
-            setShowSuccessMessage(true); // Display the success message
-            setTimeout(() => setShowSuccessMessage(false), 3000); // Hide the message after 3 seconds
+            const response = await axios.post(`https://fraud-zero-1.fly.dev/submit-form`, formData);
+            setShowModal(false);
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (error) {
             console.error('Error submitting form:', error);
         }
     };
-
 
     if (!showModal) return null;
 
