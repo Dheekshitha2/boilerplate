@@ -83,7 +83,29 @@ app.post('/generate-scam-email', async (req, res) => {
         return res.status(400).send({ error: "Email not provided" });
     }
 
-    const token = generateToken(); // Generate token for each email
+    // Check if the user already has a token
+    let { data: userData, error: userError } = await supabase
+        .from('family_members')
+        .select('token')
+        .eq('email', email)
+        .single();
+
+    let token;
+    if (userError || !userData || !userData.token) {
+        token = generateToken();  // Generate new token if none exists
+        // Update the user with the new token
+        const { error: tokenError } = await supabase
+            .from('family_members')
+            .update({ token })
+            .eq('email', email);
+        if (tokenError) {
+            console.error('Failed to update token:', tokenError);
+            return res.status(500).send({ error: 'Failed to update token in the database.', details: tokenError.message });
+        }
+    } else {
+        token = userData.token;  // Use existing token
+    }
+
     const verificationLink = `https://fraud-zero.vercel.app/scam-page?token=${token}`;
 
     // Randomly generate a bank name, customer service rep name, and subject
@@ -110,9 +132,17 @@ app.post('/generate-scam-email', async (req, res) => {
     const emailSent = await sendEmail(email, subject, formattedEmailContent);
     if (emailSent) {
         // Update the token and increment email_sent_count
-        const { error } = await supabase
+        const { data: userData } = await supabase
             .from('family_members')
-            .update({ token, email_sent_count: supabase.raw('email_sent_count + 1') })
+            .select('email_sent_count')
+            .eq('email', email)
+            .single();
+
+        const newCount = userData.email_sent_count + 1;
+
+        const { data, error } = await supabase
+            .from('family_members')
+            .update({ token: token, email_sent_count: newCount })
             .eq('email', email);
 
         if (error) {
@@ -143,37 +173,38 @@ app.post('/add-family-member', async (req, res) => {
 
 // Track click endpoint
 app.post('/track-click', async (req, res) => {
-    const { token } = req.body;  // Receive token from the frontend
-
-    try {
-        const { data, error } = await supabase
-            .from('family_members')
-            .select('*')
-            .eq('token', token);
-
-        if (error) throw error;
-        if (data.length === 0) {
-            return res.status(404).send({ message: 'User not found.' });
-        }
-
-        const user = data[0];
-        const updateData = {
-            scam_success: (user.scam_success || 0) + 1  // Increment scam_success by 1 or initialize it if not present
-        };
-
-        const { error: updateError } = await supabase
-            .from('family_members')
-            .update(updateData)
-            .eq('id', user.id);
-
-        if (updateError) throw updateError;
-
-        res.send({ message: 'Scam success count updated successfully!', count: updateData.scam_success });
-    } catch (error) {
-        console.error('Error tracking click:', error.message);
-        res.status(500).send({ error: error.message });
+    const { token } = req.body;
+    if (!token) {
+        return res.status(400).send({ error: "Token not provided" });
     }
+
+    // Fetch user by token
+    const { data: userData, error: fetchError } = await supabase
+        .from('family_members')
+        .select('*')
+        .eq('token', token)
+        .single();
+
+    if (fetchError || !userData) {
+        console.error('User not found:', fetchError);
+        return res.status(404).send({ error: 'User not found.', details: fetchError ? fetchError.message : 'No user with this token.' });
+    }
+
+    // Increment scam_success count
+    const newScamSuccessCount = (userData.scam_success || 0) + 1;
+    const { error: updateError } = await supabase
+        .from('family_members')
+        .update({ scam_success: newScamSuccessCount })
+        .eq('id', userData.id);
+
+    if (updateError) {
+        console.error('Failed to increment scam success counter:', updateError);
+        return res.status(500).send({ error: 'Failed to update scam success counter.', details: updateError.message });
+    }
+
+    res.send({ message: 'Scam success count updated successfully!', count: newScamSuccessCount });
 });
+
 
 // API endpoint for translating text
 app.post('/translate-text', async (req, res) => {
