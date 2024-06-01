@@ -1,25 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import RegistrationModal from '../components/RegistrationModal';
 import FloatingButton from '../components/FloatingButton';
-import LevelBadge from '../components/LevelBadge';
+import LevelBadge from '../components/LevelBadge'; // Import the LevelBadge component
 
 function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
-  const [members, setMembers] = useState([]); // This will hold our fetched data
 
-  useEffect(() => {
-    async function fetchMembers() {
-      try {
-        const response = await axios.get('https://fraud-zero-1.fly.dev/family-members');
-        setMembers(response.data);
-      } catch (error) {
-        console.error('Failed to fetch members:', error);
-      }
+  const members = [
+    {
+      name: 'Hart Hagerty',
+      relationship: 'Father',
+      riskLevel: 'High',
+      scamAttempts: 10,
+      scamFails: 7,
+      lastEmailStatus: 'Clicked',
+      avatar: 'https://img.daisyui.com/tailwind-css-component-profile-2@56w.png'
+    },
+    {
+      name: 'Brice Swyre',
+      relationship: 'Brother',
+      riskLevel: 'Moderate',
+      scamAttempts: 5,
+      scamFails: 2,
+      lastEmailStatus: 'Delivered',
+      avatar: 'https://img.daisyui.com/tailwind-css-component-profile-3@56w.png'
+    },
+    {
+      name: 'Marjy Ferencz',
+      relationship: 'Mother',
+      riskLevel: 'Low',
+      scamAttempts: 3,
+      scamFails: 0,
+      lastEmailStatus: 'Ignored',
+      avatar: 'https://img.daisyui.com/tailwind-css-component-profile-4@56w.png'
+    },
+    {
+      name: 'Yancy Tear',
+      relationship: 'Sister',
+      riskLevel: 'High',
+      scamAttempts: 8,
+      scamFails: 6,
+      lastEmailStatus: 'Clicked',
+      avatar: 'https://img.daisyui.com/tailwind-css-component-profile-5@56w.png'
     }
-    fetchMembers();
-  }, []);
+  ];
 
   const handleEditMember = (member) => {
     setSelectedMember(member);
@@ -33,11 +58,16 @@ function Dashboard() {
         <table className="table w-full">
           <thead>
             <tr>
-              <th className="w-1/6 text-left">Name</th>
-              <th className="w-1/6 text-left">Relationship</th>
+              <th className="w-12 text-center">
+                <label>
+                  <input type="checkbox" className="checkbox" />
+                </label>
+              </th>
+              <th className="w-1/4 text-left">Family</th>
               <th className="w-1/6 text-center">Scam Attempts</th>
-              <th className="w-1/6 text-center">Scam Success</th>
+              <th className="w-1/6 text-center">Scam Failures</th>
               <th className="w-1/6 text-center">Fail Rate</th>
+              <th className="w-1/6 text-center">Last Email Status</th>
               <th className="w-1/6 text-center">Alert Level</th>
               <th className="w-1/6 text-center">Risk Level</th>
             </tr>
@@ -45,32 +75,44 @@ function Dashboard() {
           <tbody>
             {members.map((member, index) => (
               <tr key={index}>
+                <th className="w-12 text-center">
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                </th>
                 <td className="w-1/4">
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
-                        <img src={member.avatar || 'default-avatar.png'} alt={`${member.full_name} Avatar`} />
+                        <img src={member.avatar} alt={`${member.name} Avatar`} />
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{member.full_name}</div>
+                      <div className="font-bold">{member.name}</div>
                       <div className="text-sm opacity-50">{member.relationship}</div>
                     </div>
                   </div>
                 </td>
-                <td className="w-1/6 text-center">{member.email_sent_count}</td>
-                <td className="w-1/6 text-center">{member.scam_success}</td>
-                <td className="w-1/6 text-center">{member.email_sent_count > 0 ? ((member.scam_success / member.email_sent_count) * 100).toFixed(2) : '0.00'}</td>
+                <td className="w-1/6 text-center">{member.scamAttempts}</td>
+                <td className="w-1/6 text-center">{member.scamFails}</td>
+                <td className="w-1/6 text-center">{((member.scamFails / member.scamAttempts) * 100).toFixed(2)}%</td>
                 <td className="w-1/6 text-center">
-                  <LevelBadge level={member.scam_success / member.email_sent_count > 0.3 ? 'High' : 'Low'} />
+                  <span className="badge badge-outline w-28">
+                    {member.lastEmailStatus}
+                  </span>
                 </td>
                 <td className="w-1/6 text-center">
-                  <LevelBadge level="Low" />
+                  <LevelBadge level={member.riskLevel} />
                 </td>
+                <td className="w-1/6 text-center">
+                  <LevelBadge level={member.riskLevel} />
+                </td>
+                <th className="w-12 text-center">
+                  <button className="btn btn-ghost btn-xs" onClick={() => handleEditMember(member)}>•••</button>
+                </th>
               </tr>
             ))}
           </tbody>
-
         </table>
       </div>
 
