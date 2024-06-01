@@ -2,7 +2,7 @@
 
 ## Empowering Families to Combat Bank Scams with AI-Driven Simulations
 
-Fraud Zero addresses the escalating threat of financial frauds by empowering individuals and families to actively participate in fraud prevention through realistic, AI-powered scam simulations.
+Fraud Zero is a project created for LifeHack2024. It addresses the escalating threat of financial frauds by empowering individuals and families to actively participate in fraud prevention through realistic, AI-powered scam simulations.
 
 ### Features
 
@@ -22,4 +22,8 @@ Fraud Zero addresses the escalating threat of financial frauds by empowering ind
 
 ### Usage
 
-Fraud Zero is hosted on Vercel. Access the platform online at [Fraud Zero Platform](https://fraud-zero.vercel.app). Sign up and start training against fraud by setting up family member accounts.
+Fraud Zero is currently not ready for market but you can view the demo hosted on Vercel. 
+Access the platform online at [Fraud Zero Platform](https://fraud-zero.vercel.app). 
+
+For more details, visit our [DevPost project page](#).
+
