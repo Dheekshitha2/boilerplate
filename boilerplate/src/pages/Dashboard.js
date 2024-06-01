@@ -21,11 +21,6 @@ function Dashboard() {
     fetchMembers();
   }, []);
 
-  const handleEditMember = (member) => {
-    setSelectedMember(member);
-    setShowModal(true);
-  };
-
   return (
     <div className="relative bg-white mx-6 p-4 flex flex-col space-y-4 shadow-lg rounded-2xl mt-8">
       <h2 className="text-3xl font-bold mb-4 text-primary">Dashboard</h2>
@@ -74,7 +69,7 @@ function Dashboard() {
                   <LevelBadge level={member.scam_success / member.email_sent_count > 0.3 ? 'High' : 'Low'} />
                 </td>
                 <td className="w-1/6 text-center">
-                  <LevelBadge level={member.riskLevel} />
+                  <LevelBadge level={member.riskLevel} />  {/* Display risk level using the LevelBadge */}
                 </td>
               </tr>
             ))}
@@ -92,3 +87,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
