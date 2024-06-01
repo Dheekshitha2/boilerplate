@@ -216,7 +216,7 @@ app.post('/submit-form', async (req, res) => {
         fullName, email, phoneNumber, age, gender, relationship, socialMedia,
         occupation, companyName, workEmail, workPhone, salaryRange,
         previousScamExperience, scammedPlatform, scammedAmount, protectionMeasures,
-        onlineTransactionFrequency
+        onlineTransactionFrequency, riskLevel  // Include riskLevel here
     } = req.body;
 
     // Ensure numeric fields are either numbers or null if empty
@@ -244,7 +244,8 @@ app.post('/submit-form', async (req, res) => {
                 scammed_platform: scammedPlatform,
                 scammed_amount: cleanScammedAmount,
                 protection_measures: protectionMeasures,
-                online_transaction_frequency: onlineTransactionFrequency
+                online_transaction_frequency: onlineTransactionFrequency,
+                risk_level: riskLevel  // Store risk level in the database
             }]);
 
         if (error) {
@@ -256,6 +257,7 @@ app.post('/submit-form', async (req, res) => {
         res.status(500).send({ error: 'Failed to insert data', message: error.message });
     }
 });
+
 
 // API endpoint to fetch all emails from the database
 app.get('/get-all-emails', async (req, res) => {

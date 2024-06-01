@@ -57,12 +57,58 @@ function RegistrationModal({ showModal, setShowModal }) {
         });
     };
 
+    function calculateRiskLevel(formData) {
+        let riskScore = 0;
+
+        // Previous Scam Experience
+        if (formData.previousScamExperience) {
+            riskScore += 2; // higher score for previous victims
+        }
+
+        // Social Media Usage
+        if (formData.socialMedia.length > 3) {
+            riskScore += 1; // more platforms, higher risk
+        }
+
+        // Protection Measures
+        if (formData.protectionMeasures.includes('antivirus') || formData.protectionMeasures.includes('two-factor authentication')) {
+            riskScore -= 1; // good protection reduces risk
+        }
+
+        // Online Transaction Frequency
+        const transactionRisk = {
+            'never': 0,
+            'rarely': 1,
+            'occasionally': 2,
+            'frequently': 3
+        };
+        riskScore += transactionRisk[formData.onlineTransactionFrequency];
+
+        // Age considerations (example: higher risk for very young or older)
+        if (formData.age < 18 || formData.age > 60) {
+            riskScore += 1;
+        }
+
+        // Determine risk level based on score
+        if (riskScore > 4) {
+            return 'High';
+        } else if (riskScore > 2) {
+            return 'Medium';
+        } else {
+            return 'Low';
+        }
+    }
+
+
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const riskLevel = calculateRiskLevel(formData);  // Calculate the risk level based on the formData
+        const extendedFormData = { ...formData, riskLevel };  // Append the risk level to the formData
+
         try {
-            const response = await axios.post(`https://fraud-zero-1.fly.dev/submit-form`, formData);
+            const response = await axios.post('https://fraud-zero-1.fly.dev/submit-form', extendedFormData);
             setShowModal(false);
             setShowSuccessMessage(true);
             setTimeout(() => setShowSuccessMessage(false), 3000);
@@ -70,6 +116,7 @@ function RegistrationModal({ showModal, setShowModal }) {
             console.error('Error submitting form:', error);
         }
     };
+
 
     if (!showModal) return null;
 
