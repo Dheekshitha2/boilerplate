@@ -33,11 +33,11 @@ function Dashboard() {
         <table className="table w-full">
           <thead>
             <tr>
-              <th className="w-1/4 text-left">Family</th>
+              <th className="w-1/6 text-left">Name</th>
+              <th className="w-1/6 text-left">Relationship</th>
               <th className="w-1/6 text-center">Scam Attempts</th>
-              <th className="w-1/6 text-center">Scam Failures</th>
+              <th className="w-1/6 text-center">Scam Success</th>
               <th className="w-1/6 text-center">Fail Rate</th>
-              <th className="w-1/6 text-center">Last Email Status</th>
               <th className="w-1/6 text-center">Alert Level</th>
               <th className="w-1/6 text-center">Risk Level</th>
             </tr>
@@ -45,36 +45,32 @@ function Dashboard() {
           <tbody>
             {members.map((member, index) => (
               <tr key={index}>
-                <th className="w-12 text-center">
-                  <label>
-                    <input type="checkbox" className="checkbox" />
-                  </label>
-                </th>
                 <td className="w-1/4">
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
-                        <img src={member.avatar || 'default-avatar.png'} alt={`${member.name} Avatar`} />
+                        <img src={member.avatar || 'default-avatar.png'} alt={`${member.full_name} Avatar`} />
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{member.name}</div>
+                      <div className="font-bold">{member.full_name}</div>
                       <div className="text-sm opacity-50">{member.relationship}</div>
                     </div>
                   </div>
                 </td>
                 <td className="w-1/6 text-center">{member.email_sent_count}</td>
                 <td className="w-1/6 text-center">{member.scam_success}</td>
-                <td className="w-1/6 text-center">{((member.scam_success / member.email_sent_count) * 100).toFixed(2)}</td>
+                <td className="w-1/6 text-center">{member.email_sent_count > 0 ? ((member.scam_success / member.email_sent_count) * 100).toFixed(2) : '0.00'}</td>
                 <td className="w-1/6 text-center">
                   <LevelBadge level={member.scam_success / member.email_sent_count > 0.3 ? 'High' : 'Low'} />
                 </td>
                 <td className="w-1/6 text-center">
-                  <LevelBadge level={member.riskLevel} />
+                  <LevelBadge level="Low" />
                 </td>
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
 
