@@ -24,7 +24,7 @@ function PersonalPage() {
 
   return (
     <div className="container mx-auto p-4 flex flex-col space-y-4">
-      <p className="text-5xl font-bold text-primary mb-4 ml-4">Hi, Hart</p>
+      <p className="text-5xl font-bold text-primary mb-4 ml-4">Hi, {memberName}</p>
       <div className="bg-white p-6 shadow-lg rounded-2xl">
         {/* Content Columns */}
         <div className="flex flex-grow">
