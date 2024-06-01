@@ -58,12 +58,11 @@ function RegistrationModal({ showModal, setShowModal }) {
     };
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const API_URL = 'https://fraud-zero-1.fly.dev';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${API_URL}/submit-form`, formData);
+            const response = await axios.post(`https://fraud-zero-1.fly.dev/submit-form`, formData);
             setShowModal(false);
             setShowSuccessMessage(true);
             setTimeout(() => setShowSuccessMessage(false), 3000);
