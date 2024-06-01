@@ -14,7 +14,7 @@ Fraud Zero is a project created for LifeHack2024. It addresses the escalating th
   
 - **Proactive Fraud Awareness**: Regular interaction with the platform helps users and their families stay ahead of evolving scam tactics.
 
-### Technology Stack
+## Tech Stack
 
 - **Frontend**: Tailwind CSS, DaisyUI, React.js
 - **Backend**: NodeJS, ExpressJS, Supabase
