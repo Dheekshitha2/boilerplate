@@ -10,12 +10,11 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const API_URL = process.env.API_URL || 'http://localhost:3000';
 const clickCounts = {};  // This object will store email click counts
 
 // Apply CORS middleware to allow connections from frontend
 app.use(cors({
-    origin: API_URL
+    origin: "https://fraud-zero.vercel.app"
 }));
 
 // Initialize OpenAI and Supabase clients
@@ -85,7 +84,7 @@ app.post('/generate-scam-email', async (req, res) => {
     }
 
     const token = generateToken(); // Generate token for each email
-    const verificationLink = `${process.env.API_URL || 'http://localhost:3000'}/scam-page?token=${token}`; // Use environment or default to localhost
+    const verificationLink = `https://fraud-zero.vercel.app/scam-page?token=${token}`;
 
     // Randomly generate a bank name, customer service rep name, and subject
     const banks = ['DBS', 'OCBC', 'UOB', 'Standard Chartered', 'HSBC'];
@@ -104,7 +103,7 @@ app.post('/generate-scam-email', async (req, res) => {
     const formattedEmailContent = `
         <html>
             <body>
-            <p>${scamEmailContent.replace(/\n/g, '<br>').replace(/click here/gi, `<a href="${verificationLink}">click here</a>`)}</p>
+                <p>${scamEmailContent.replace(/\n/g, '<br>').replace("click here", `<a href="${verificationLink}">click here</a>`)}</p>
             </body>
         </html>`;
 
