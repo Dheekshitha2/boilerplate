@@ -12,7 +12,7 @@ const FamilyPage = () => {
       relationship: "Father",
       avatar: "https://img.daisyui.com/tailwind-css-component-profile-2@56w.png",
       vulnerabilityData: {
-        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        labels: ['Investments', 'E-commerce', 'Fake Friend', 'Job', 'Phishing'],
         datasets: [{
           label: '',
           data: [80, 70, 90, 60, 55],
@@ -29,7 +29,7 @@ const FamilyPage = () => {
       relationship: "Brother",
       avatar: "https://img.daisyui.com/tailwind-css-component-profile-3@56w.png",
       vulnerabilityData: {
-        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        labels: ['Investments', 'E-commerce', 'Fake Friend', 'Job', 'Phishing'],
         datasets: [{
           label: '',
           data: [65, 59, 70, 81, 56],
@@ -46,7 +46,7 @@ const FamilyPage = () => {
       relationship: "Mother",
       avatar: "https://img.daisyui.com/tailwind-css-component-profile-4@56w.png",
       vulnerabilityData: {
-        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        labels: ['Investments', 'E-commerce', 'Fake Friend', 'Job', 'Phishing'],
         datasets: [{
           label: '',
           data: [40, 45, 30, 70, 75],
@@ -63,7 +63,7 @@ const FamilyPage = () => {
       relationship: "Sister",
       avatar: "https://img.daisyui.com/tailwind-css-component-profile-5@56w.png",
       vulnerabilityData: {
-        labels: ["Phishing", "Vishing", "Smishing", "Physical", "Online"],
+        labels: ['Investments', 'E-commerce', 'Fake Friend', 'Job', 'Phishing'],
         datasets: [{
           label: '',
           data: [85, 80, 95, 65, 60],
@@ -120,7 +120,7 @@ const FamilyPage = () => {
               <Radar data={member.vulnerabilityData} options={options} />
             </div>
             <div className="card-actions">
-            <Link to={`/personal/${member.id}`} className="btn btn-primary">Access Personal Page</Link>
+            <Link to={`/personal/${member.name}`} className="btn btn-primary">Access Personal Page</Link>
             </div>
           </div>
         </div>
