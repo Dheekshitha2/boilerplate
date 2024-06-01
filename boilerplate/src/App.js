@@ -4,10 +4,10 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
-import Family from './pages/Family'; 
+import Family from './pages/Family';
 import ScamPage from './pages/ScamPage';
 import Courses from './pages/Courses';
-import PersonalPage from './pages/PersonalPage'; 
+import PersonalPage from './pages/PersonalPage';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -26,9 +26,9 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/family" element={<Family />} />
-            <Route path="/scam-page" />
+            <Route path="/scam-page" element={<ScamPage />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/personal/:memberId" element={<PersonalPage />} /> 
+            <Route path="/personal/:memberId" element={<PersonalPage />} />
           </Routes>
         </div>
       </div>
