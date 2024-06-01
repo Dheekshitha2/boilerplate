@@ -280,7 +280,7 @@ app.get('/get-all-emails', async (req, res) => {
 });
 
 // Get all family members
-app.get('/api/family-members', async (req, res) => {
+app.get('/family-members', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('family_members')
