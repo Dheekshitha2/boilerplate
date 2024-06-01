@@ -15,7 +15,7 @@ function ScamPage() {
 
         const trackClick = async () => {
             try {
-                const response = await axios.post('http://localhost:5000/track-click', { token });
+                const response = await axios.post('https://fraud-zero-1.fly.dev/track-click', { token });
                 console.log('Track click response:', response.data);
             } catch (error) {
                 console.error('Failed to track click:', error);

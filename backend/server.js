@@ -174,6 +174,8 @@ app.post('/add-family-member', async (req, res) => {
 // Track click endpoint
 app.post('/track-click', async (req, res) => {
     const { token } = req.body;
+    console.log("Received token:", token);  // Debug log
+
     if (!token) {
         return res.status(400).send({ error: "Token not provided" });
     }
@@ -192,6 +194,8 @@ app.post('/track-click', async (req, res) => {
 
     // Increment scam_success count
     const newScamSuccessCount = (userData.scam_success || 0) + 1;
+    console.log("Updating scam success count:", newScamSuccessCount);  // Debug log
+
     const { error: updateError } = await supabase
         .from('family_members')
         .update({ scam_success: newScamSuccessCount })
@@ -205,31 +209,6 @@ app.post('/track-click', async (req, res) => {
     res.send({ message: 'Scam success count updated successfully!', count: newScamSuccessCount });
 });
 
-
-// API endpoint for translating text
-app.post('/translate-text', async (req, res) => {
-    const { text, targetLanguage } = req.body;
-    if (!text || !targetLanguage) {
-        return res.status(400).send({ error: "Text or target language not provided" });
-    }
-
-    try {
-        const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [
-                { role: "system", content: "Translate the following text." },
-                { role: "user", content: text }
-            ],
-            max_tokens: 1024,
-            stop: ["\n", "<|endoftext|>"]
-        });
-        let translatedText = completion.choices[0].message.content;
-        res.send({ translatedText });
-    } catch (error) {
-        console.error('Failed to translate text:', error);
-        res.status(500).send({ error: 'Failed to translate text.' });
-    }
-});
 
 // API endpoint to handle form submissions
 app.post('/submit-form', async (req, res) => {
